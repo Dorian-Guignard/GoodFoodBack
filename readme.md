@@ -27,7 +27,10 @@ composer require symfony/orm-pack
 composer require symfony/form
 composer require symfony/validator
 composer require security-csrf
-
+composer require easycorp/easyadmin-bundle
+composer require form validator
+composer require symfony/apache-pack
+composer require symfony/serializer
 
 # 2: FAIT #
 
