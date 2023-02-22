@@ -4,12 +4,19 @@ namespace App\Entity;
 use App\Entity\Virtue;
 use App\Entity\Composition;
 use App\Repository\RecipeRepository;
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\VirtueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * @ORM\Entity(repositoryClass=RecipeRepository::class)
+ * @UniqueEntity("name")
  */
 class Recipe
 {
@@ -17,41 +24,49 @@ class Recipe
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
      */
     private $id;
 
     /**
+     * @Groups({"recipess_get_collection", "recipes_get_item"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * 
      * @ORM\Column(type="text" , nullable=true)
      */
     private $description;
 
     /**
+     * @Groups({"recipess_get_collection", "recipes_get_item"})
      * @ORM\Column(type="integer")
      */
     private $duration;
 
     /**
+     * @Groups({"recipess_get_collection", "recipes_get_item"})
      * @ORM\Column(type="integer", nullable=true)
      */
     private $heatTime;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"recipess_get_collection", "recipes_get_item"})
      */
     private $prepTime;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"recipess_get_collection", "recipes_get_item"})
      */
     private $portion;
     
     /**
      * @ORM\Column (type="text")
+     * 
      */
     private $steps; #= [];
 
@@ -62,18 +77,22 @@ class Recipe
 
     /**
      * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true)
+     * @Ignore()
      */
     private $compositions;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes")
+     * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes", cascade={"remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"recipess_get_collection", "recipes_get_item"})
+     * 
      */
     private $virtue;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="recipes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"recipess_get_collection", "recipes_get_item"})
      */
     private $category;
 

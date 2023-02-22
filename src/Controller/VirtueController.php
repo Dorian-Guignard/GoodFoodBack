@@ -46,6 +46,9 @@ class VirtueController extends AbstractController
         ]);
     }
 
+
+
+
     /**
      * @Route("/{id}", name="app_virtue_show", methods={"GET"})
      */

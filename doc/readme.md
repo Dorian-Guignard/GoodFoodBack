@@ -26,6 +26,7 @@ composer require --dev symfony/var-dumper
 composer require symfony/orm-pack
 composer require symfony/form
 composer require symfony/validator
+composer require lexik/jwt-authentication-bundle
 composer require security-csrf
 
 

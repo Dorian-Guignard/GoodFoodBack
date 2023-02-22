@@ -6,30 +6,47 @@ use App\Repository\VirtueRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints;
+
+
 /**
  * @ORM\Entity(repositoryClass=VirtueRepository::class)
+ * @UniqueEntity("name")
  */
 class Virtue
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
+     * @Assert\NotBlank
      * @ORM\Column(type="integer")
+     * @Groups({"virtues_get_collection", "virtues_get_item"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * 
+     * @Groups({"virtues_get_collection", "virtues_get_item"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"virtues_get_collection", "virtues_get_item"})
+     * @Assert\NotBlank
      */
     private $description;
 
      /**
      * @ORM\OneToMany(targetEntity=Recipe::class, mappedBy="virtue")
+     * @Ignore()
+     * 
      */
     private $recipes;
 
@@ -41,6 +58,8 @@ class Virtue
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"virtues_get_collection", "virtues_get_item"})
+     * @Assert\NotBlank
      */
     private $picture;
 
