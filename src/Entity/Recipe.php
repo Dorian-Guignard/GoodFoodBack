@@ -101,9 +101,6 @@ class Recipe
         $this->compositions = new ArrayCollection();
     }
 
-   
-
-  
 
     public function getId(): ?int
     {
