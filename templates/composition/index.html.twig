@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Composition index{% endblock %}
+
+{% block body %}
+<div class="backshow">
+    <h1>Composition index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Unity</th>
+                <th>Quantity</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for composition in compositions %}
+            <tr>
+                <td>{{ composition.id }}</td>
+                <td>{{ composition.unity }}</td>
+                <td>{{ composition.quantity }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_composition_show', {'id': composition.id}) }}">show</a>
+                    <a class="btn btn-warning" href="{{ path('app_composition_edit', {'id': composition.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('app_composition_new') }}">Create new</a>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+header{
+    background-color:forestgreen;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border-radius: 10%;
+}
+.nav-link{
+  color: whitesmoke;
+  font-weight: bold;
+
+}
+
+.card{
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    color:darkolivegreen;
+    
+}
+
+.card h5{
+
+color: darkgoldenrod;
+font-weight: bold;
+}
+
+footer nav{
+    background-color:forestgreen;
+   width: 70%;
+    margin-left: 15%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border-radius: 10%;
+}
+
+.backshow{
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding-left: 2%;
+    border-radius: 5%;
+}

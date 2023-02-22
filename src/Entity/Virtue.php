@@ -4,7 +4,8 @@ namespace App\Entity;
 use App\Entity\Recipe;
 use App\Repository\VirtueRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 /**
  * @ORM\Entity(repositoryClass=VirtueRepository::class)
  */
@@ -26,6 +27,17 @@ class Virtue
      * @ORM\Column(type="text")
      */
     private $description;
+
+     /**
+     * @ORM\OneToMany(targetEntity=Recipe::class, mappedBy="virtue")
+     */
+    private $recipes;
+
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -69,6 +81,36 @@ class Virtue
     public function setPicture(?string $picture): self
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): self
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes[] = $recipe;
+            $recipe->setVirtue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): self
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            // set the owning side to null (unless already changed)
+            if ($recipe->getVirtue() === $this) {
+                $recipe->setVirtue(null);
+            }
+        }
 
         return $this;
     }

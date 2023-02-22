@@ -128,6 +128,9 @@ REALISER LE CRUD VIA make:crud
 
 TEST DU CRUD
 
+lancer un server php:
+php -S 0.0.0.0:8000 -t public
+
 # 8:
 
 CONFIGURER L API POUR UN PREMIER ENVOI AUX DEV FRONT

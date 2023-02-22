@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-use App\Entity\V;
+use App\Entity\Virtue;
 use App\Entity\Composition;
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,7 +26,7 @@ class Recipe
     private $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text" , nullable=true)
      */
     private $description;
 
@@ -49,11 +49,11 @@ class Recipe
      * @ORM\Column(type="integer")
      */
     private $portion;
-
+    
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column (type="text")
      */
-    private $steps = [];
+    private $steps; #= [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -162,13 +162,13 @@ class Recipe
 
         return $this;
     }
-
-    public function getSteps(): ?array
+#?array
+    public function getSteps(): ?string 
     {
         return $this->steps;
     }
-
-    public function setSteps(array $steps): self
+#(array $steps): self
+    public function setSteps(string $steps): self
     {
         $this->steps = $steps;
 
@@ -187,6 +187,31 @@ class Recipe
         return $this;
     }
 
+    public function getVirtue(): ?Virtue
+    {
+        return $this->virtue;
+    }
+
+    public function setVirtue(?Virtue $virtue): self
+    {
+        $this->virtue = $virtue;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+ 
     /**
      * @return Collection<int, Composition>
      */
@@ -217,29 +242,4 @@ class Recipe
         return $this;
     }
 
-    public function getVirtue(): ?Virtue
-    {
-        return $this->virtue;
-    }
-
-    public function setVirtue(?Virtue $virtue): self
-    {
-        $this->virtue = $virtue;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
- 
 }

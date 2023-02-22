@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Food index{% endblock %}
+
+{% block body %}
+<div class="backshow">
+    <h1>Food index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Picture</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for food in food %}
+            <tr>
+                <td>{{ food.id }}</td>
+                <td>{{ food.name }}</td>
+                <td>{{ food.picture }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_food_show', {'id': food.id}) }}">show</a>
+                    <a class="btn btn-warning" href="{{ path('app_food_edit', {'id': food.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('app_food_new') }}">Create new</a>
+</div>
+{% endblock %}

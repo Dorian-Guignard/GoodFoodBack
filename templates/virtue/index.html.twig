@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Virtue index{% endblock %}
+
+{% block body %}
+<div class="backshow">
+    <h1>Virtue index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Picture</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for virtue in virtues %}
+            <tr>
+                <td>{{ virtue.id }}</td>
+                <td>{{ virtue.name }}</td>
+                <td>{{ virtue.description }}</td>
+                <td>{{ virtue.picture }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_virtue_show', {'id': virtue.id}) }}">show</a>
+                    <a class="btn btn-warning" href="{{ path('app_virtue_edit', {'id': virtue.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+<a class="btn btn-success" href="{{ path('app_virtue_new') }}">Create new</a>
+</div>
+{% endblock %}
