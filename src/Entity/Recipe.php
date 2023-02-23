@@ -50,11 +50,7 @@ class Recipe
      */
     private $portion;
     
-    /**
-     * @ORM\Column (type="text")
-     */
-    private $steps; #= [];
-
+  
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -76,6 +72,13 @@ class Recipe
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $steps = [];
+
+   
 
     public function __construct()
     {
@@ -162,18 +165,8 @@ class Recipe
 
         return $this;
     }
-#?array
-    public function getSteps(): ?string 
-    {
-        return $this->steps;
-    }
-#(array $steps): self
-    public function setSteps(string $steps): self
-    {
-        $this->steps = $steps;
 
-        return $this;
-    }
+  
 
     public function getPicture(): ?string
     {
@@ -241,5 +234,19 @@ class Recipe
 
         return $this;
     }
+
+    public function getSteps(): ?array
+    {
+        return $this->steps;
+    }
+
+    public function setSteps(?array $steps): self
+    {
+        $this->steps = $steps;
+
+        return $this;
+    }
+
+ 
 
 }

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Form;
-use Symfony\Bridge\Doctrine\Form\Type\ArrayType;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Virtue;
 use App\Entity\Category;
@@ -9,6 +9,7 @@ use App\Entity\Recipe;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 class RecipeType extends AbstractType
 {
@@ -21,7 +22,6 @@ class RecipeType extends AbstractType
             ->add('heatTime')
             ->add('prepTime')
             ->add('portion')
-            ->add('steps')
             ->add('picture')
             ->add('virtue', EntityType::class, [
                 'class' => Virtue::class,
@@ -33,6 +33,7 @@ class RecipeType extends AbstractType
                 'choice_label' => 'name',
                
             ])
+         
         ;
     }
 
