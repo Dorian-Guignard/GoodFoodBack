@@ -1,6 +1,7 @@
 #### GOODFOOD ####
 
-
+Pour se connecter au back : php -S 0.0.0.0:8080 -t public
+ensuite aller sur http://0.0.0.0:8080/backhome
 
 
 ### LISTE DES ETAPES BACK ###
