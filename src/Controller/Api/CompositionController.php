@@ -104,7 +104,7 @@ class CompositionController extends AbstractController
 
 
         $composition = $serializer->deserialize($jsonContent, Composition::class, "json");
-        var_dump($composition);
+        
         $errors = $validator->validate($composition);
 
         $errorsList = [];

@@ -103,7 +103,7 @@ class FoodController extends AbstractController
 
 
         $food = $serializer->deserialize($jsonContent, Food::class, "json");
-        var_dump($food);
+
         $errors = $validator->validate($food);
 
         $errorsList = [];

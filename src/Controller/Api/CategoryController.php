@@ -103,7 +103,7 @@ class CategoryController extends AbstractController
 
 
         $category = $serializer->deserialize($jsonContent, Category::class, "json");
-        var_dump($category);
+
         $errors = $validator->validate($category);
 
         $errorsList = [];
