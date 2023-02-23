@@ -71,13 +71,18 @@ class FoodController extends AbstractController
 
         $jsonContent = json_decode($request->getContent(), true);
 
-        $entityManager->persist($food);
+        $patchFood = $food
+            ->setName($jsonContent['name'])
+            ->setPicture($jsonContent['picture']);
+
+
+        $entityManager->persist($patchFood);
 
         $entityManager->flush();
 
         return $this->json(
 
-            ['food' => $food],
+            ['food' => $patchFood],
 
             Response::HTTP_OK,
 

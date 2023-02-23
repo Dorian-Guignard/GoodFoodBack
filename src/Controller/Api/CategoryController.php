@@ -72,13 +72,18 @@ class CategoryController extends AbstractController
 
         $jsonContent = json_decode($request->getContent(), true);
 
-        $entityManager->persist($category);
+        $patchCategory = $category
+            ->setName($jsonContent['name'])
+            ->setPicture($jsonContent['picture']);
+
+
+        $entityManager->persist($patchCategory);
 
         $entityManager->flush();
 
         return $this->json(
 
-            ['food' => $category],
+            ['category' => $patchCategory],
 
             Response::HTTP_OK,
 

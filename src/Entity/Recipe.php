@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use App\Entity\Virtue;
 use App\Entity\Composition;
 use App\Repository\RecipeRepository;
@@ -29,7 +30,7 @@ class Recipe
     private $id;
 
     /**
-     * @Groups({"recipess_get_collection", "recipes_get_item"})
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -37,68 +38,73 @@ class Recipe
     /**
      * 
      * @ORM\Column(type="text" , nullable=true)
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $description;
 
     /**
-     * @Groups({"recipess_get_collection", "recipes_get_item"})
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @ORM\Column(type="integer")
      */
     private $duration;
 
     /**
-     * @Groups({"recipess_get_collection", "recipes_get_item"})
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @ORM\Column(type="integer", nullable=true)
      */
     private $heatTime;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"recipess_get_collection", "recipes_get_item"})
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $prepTime;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"recipess_get_collection", "recipes_get_item"})
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $portion;
-    
+
     /**
      * @ORM\Column (type="text")
-     * 
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $steps; #= [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $picture;
 
     /**
      * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true)
      * @Ignore()
+     * @Groups({"recipes_get_collection"})
      */
     private $compositions;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"recipess_get_collection", "recipes_get_item"})
+     * @Groups({"recipes_get_collection"})
      * 
      */
     private $virtue;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="recipes")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="recipes", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"recipess_get_collection", "recipes_get_item"})
+     * @Groups({"recipes_get_collection"})
      */
     private $category;
 
     public function __construct()
     {
         $this->compositions = new ArrayCollection();
+        /*         $this->virtue = new ArrayCollection();
+        $this->category = new ArrayCollection(); */
     }
 
 
@@ -178,12 +184,12 @@ class Recipe
 
         return $this;
     }
-#?array
-    public function getSteps(): ?string 
+    #?array
+    public function getSteps(): ?string
     {
         return $this->steps;
     }
-#(array $steps): self
+    #(array $steps): self
     public function setSteps(string $steps): self
     {
         $this->steps = $steps;
@@ -227,7 +233,7 @@ class Recipe
         return $this;
     }
 
- 
+
     /**
      * @return Collection<int, Composition>
      */
@@ -257,5 +263,4 @@ class Recipe
 
         return $this;
     }
-
 }

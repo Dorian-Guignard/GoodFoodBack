@@ -3,6 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Entity\Recipe;
+use App\Entity\Virtue;
+use App\Entity\Category;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +32,7 @@ class RecipeController extends AbstractController
 
             [],
 
-            ['groups' =>"recipes_get_collection"]
+            ['groups' => "recipes_get_collection"]
         ]);
     }
 
@@ -47,9 +49,27 @@ class RecipeController extends AbstractController
             return $this->json(['message' => 'recette non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
+        $recipeData = [
+
+            [
+                'recipe' => $recipe,
+
+                'category' => [
+                    'id' => $recipe->getCategory()->getId(),
+                    'name' => $recipe->getCategory()->getName()
+                ],
+
+                'virtue' => [
+                    'id' => $recipe->getVirtue()->getId(),
+                    'name' => $recipe->getVirtue()->getName(),
+                    'description' => $recipe->getVirtue()
+                ],
+            ]
+        ];
+
         return $this->json(
 
-            ['recipe' => $recipe],
+            ['recipe' => $recipeData],
 
             Response::HTTP_OK,
 
@@ -62,7 +82,7 @@ class RecipeController extends AbstractController
     /**
      * Update Recipe
      * 
-     * @Route("/api/Recipes/{id<\d+>}", name="app_api_patch_Recipes_item", methods={"PATCH"})
+     * @Route("/api/recipes/{id<\d+>}", name="app_api_patch_Recipes_item", methods={"PATCH"})
      */
     public function patch(Recipe $Recipe = null, Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager)
     {
@@ -73,13 +93,23 @@ class RecipeController extends AbstractController
 
         $jsonContent = json_decode($request->getContent(), true);
 
-        $entityManager->persist($Recipe);
+        $patchRecipe = $Recipe
+            ->setName($jsonContent['name'])
+            ->setDescription($jsonContent['description'])
+            ->setDuration($jsonContent['duration'])
+            ->setHeatTime($jsonContent['heatTime'])
+            ->setPrepTime($jsonContent['prepTime'])
+            ->setPortion($jsonContent['portion'])
+            ->setSteps($jsonContent['steps'])
+            ->setPicture($jsonContent['picture']);
+
+        $entityManager->persist($patchRecipe);
 
         $entityManager->flush();
 
         return $this->json(
 
-            ['Recipe' => $Recipe],
+            ['Recipe' => $patchRecipe],
 
             Response::HTTP_OK,
 
@@ -101,7 +131,7 @@ class RecipeController extends AbstractController
 
 
         $recipe = $serializer->deserialize($jsonContent, Recipe::class, "json");
-        var_dump($recipe);
+
         $errors = $validator->validate($recipe);
 
         $errorsList = [];
@@ -114,6 +144,7 @@ class RecipeController extends AbstractController
 
             return $this->json($errorsList, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+        /* var_dump($recipe); */
 
         $entityManager->persist($recipe);
 
@@ -136,5 +167,4 @@ class RecipeController extends AbstractController
             ['groups' => 'recipes_get_item']
         );
     }
-
 }

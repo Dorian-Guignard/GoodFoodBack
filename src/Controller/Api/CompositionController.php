@@ -71,13 +71,18 @@ class CompositionController extends AbstractController
 
         $jsonContent = json_decode($request->getContent(), true);
 
-        $entityManager->persist($composition);
+        $patchComposition = $composition
+            ->setUnity($jsonContent['unity'])
+            ->setQuantity($jsonContent['quantity']);
+            
+
+        $entityManager->persist($patchComposition);
 
         $entityManager->flush();
 
         return $this->json(
 
-            ['composition' => $composition],
+            ['composition' => $patchComposition],
 
             Response::HTTP_OK,
 

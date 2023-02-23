@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use App\Entity\Recipe;
 use App\Repository\VirtueRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,7 +23,7 @@ class Virtue
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @Assert\NotBlank
+     * 
      * @ORM\Column(type="integer")
      * @Groups({"virtues_get_collection", "virtues_get_item"})
      */
@@ -30,8 +31,7 @@ class Virtue
 
     /**
      * @ORM\Column(type="string", length=255)
-     * 
-     * 
+     * @Assert\NotBlank
      * @Groups({"virtues_get_collection", "virtues_get_item"})
      */
     private $name;
@@ -43,7 +43,7 @@ class Virtue
      */
     private $description;
 
-     /**
+    /**
      * @ORM\OneToMany(targetEntity=Recipe::class, mappedBy="virtue")
      * @Ignore()
      * 

@@ -77,13 +77,20 @@ class VirtueController extends AbstractController
 
         $jsonContent = json_decode($request->getContent(), true);
 
-        $entityManager->persist($virtue);
+
+        $patchVirtue = $virtue
+            ->setName($jsonContent['name'])
+            ->setDescription($jsonContent['description'])
+            ->setPicture($jsonContent['picture']);
+
+
+        $entityManager->persist($patchVirtue);
 
         $entityManager->flush();
 
         return $this->json(
 
-            ['virtue' => $virtue],
+            ['virtue' => $patchVirtue],
 
             Response::HTTP_OK,
 
@@ -105,7 +112,7 @@ class VirtueController extends AbstractController
 
 
         $virtue = $serializer->deserialize($jsonContent, Virtue::class, "json");
-        var_dump($virtue);
+
         $errors = $validator->validate($virtue);
 
         $errorsList = [];
