@@ -132,4 +132,21 @@ class FoodController extends AbstractController
             ['groups' => 'foods_get_item']
         );
     }
+    /**
+     * Delete food
+     * 
+     * @Route("/api/foods/{id<\d+>}", name="app_api_delete_foods_item", methods={"DELETE"})
+     */
+    public function delete(Food $food = null, EntityManagerInterface $entityManager)
+    {
+        if ($food === null) {
+            return $this->json(['message' => 'ingrédient non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $entityManager->remove($food);
+
+        $entityManager->flush();
+
+        return $this->json(['message' => 'ingrédient supprimé.'], Response::HTTP_OK);
+    }
 }

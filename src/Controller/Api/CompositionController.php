@@ -139,4 +139,21 @@ class CompositionController extends AbstractController
             ['groups' => 'compositions_get_item']
         );
     }
+
+    /**
+     * Delete composition
+     * 
+     * @Route("/api/compositions/{id<\d+>}", name="app_api_delete_compositions_item", methods={"DELETE"})
+     */
+    public function delete(Composition $composition = null, EntityManagerInterface $entityManager)
+    {
+        if ($composition === null) {
+            return $this->json(['message' => 'Composition non trouvée.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $entityManager->remove($composition);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Composition supprimée.'], Response::HTTP_OK);
+    }
 }

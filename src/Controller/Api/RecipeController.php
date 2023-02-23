@@ -167,4 +167,20 @@ class RecipeController extends AbstractController
             ['groups' => 'recipes_get_item']
         );
     }
+    /**
+     * Delete recipe
+     * 
+     * @Route("/api/recipes/{id<\d+>}", name="app_api_delete_recipes_item", methods={"DELETE"})
+     */
+    public function delete(Recipe $recipe = null, EntityManagerInterface $entityManager)
+    {
+        if ($recipe === null) {
+            return $this->json(['message' => 'Recette non trouvée.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $entityManager->remove($recipe);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Recette supprimée.'], Response::HTTP_OK);
+    }
 }

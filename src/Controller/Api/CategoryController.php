@@ -133,4 +133,21 @@ class CategoryController extends AbstractController
             'categories_get_item']
         );
     }
+
+    /**
+     * Delete category
+     * 
+     * @Route("/api/categories/{id<\d+>}", name="app_api_delete_categories_item", methods={"DELETE"})
+     */
+    public function delete(Category $category = null, EntityManagerInterface $entityManager)
+    {
+        if ($category === null) {
+            return $this->json(['message' => 'Categorie non trouvée.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $entityManager->remove($category);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'La catégorie a été supprimée.'], Response::HTTP_OK);
+    }
 }

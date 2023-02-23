@@ -147,4 +147,20 @@ class VirtueController extends AbstractController
             ['groups' => 'virtues_get_item']
         );
     }
+    /**
+     * Delete virtue
+     * 
+     * @Route("/api/virtues/{id<\d+>}", name="app_api_delete_virtues_item", methods={"DELETE"})
+     */
+    public function delete(Virtue $virtue = null, EntityManagerInterface $entityManager)
+    {
+        if ($virtue === null) {
+            return $this->json(['message' => 'Vertu non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $entityManager->remove($virtue);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Vertu supprimée.'], Response::HTTP_OK);
+    }
 }
