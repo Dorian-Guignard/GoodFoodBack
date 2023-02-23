@@ -105,9 +105,9 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
             MenuItem::linkToCrud('Composition', 'fa fa-filter', Composition::class),
             MenuItem::linkToCrud('Food', 'fas fa-apple-alt', Food::class),
-            MenuItem::linkToCrud('Recipe', 'far fa-lemon', Recipe::class)->setAction('new'),
+            MenuItem::linkToCrud('Recipe', 'far fa-lemon', Recipe::class),
             MenuItem::linkToCrud('Virtue', 'fas fa-leaf', Virtue::class),
-            MenuItem::linkToCrud('Category', 'fas fa-poll-h', Category::class)->setAction('new'),
+            MenuItem::linkToCrud('Category', 'fas fa-poll-h', Category::class),
 
 
         ];

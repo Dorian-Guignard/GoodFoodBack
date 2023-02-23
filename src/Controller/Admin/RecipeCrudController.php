@@ -18,6 +18,7 @@ class RecipeCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
+             
             ->setPageTitle(Crud::PAGE_INDEX, 'Recipe')
             ->overrideTemplate('crud/edit', 'bundles/EasyAdminBundle/custom/crud_edit_custom.html.twig')
             ->overrideTemplate('crud/index', 'bundles/EasyAdminBundle/custom/crud_index_custom.html.twig')
@@ -32,5 +33,8 @@ class RecipeCrudController extends AbstractCrudController
                 ->linkToCrudAction('approveUsers')
                 ->addCssClass('btn btn-primary')
                 ->setIcon('fa fa-user-check'));
+                
     }
+    
+   
 }
