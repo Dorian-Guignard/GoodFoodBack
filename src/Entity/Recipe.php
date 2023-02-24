@@ -66,11 +66,7 @@ class Recipe
      */
     private $portion;
 
-    /**
-     * @ORM\Column (type="text")
-     * @Groups({"recipes_get_collection", "recipes_get_item"})
-     */
-    private $steps; #= [];
+   
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -99,6 +95,11 @@ class Recipe
      * @Groups({"recipes_get_collection"})
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $steps = [];
 
     public function __construct()
     {
@@ -184,18 +185,7 @@ class Recipe
 
         return $this;
     }
-    #?array
-    public function getSteps(): ?string
-    {
-        return $this->steps;
-    }
-    #(array $steps): self
-    public function setSteps(string $steps): self
-    {
-        $this->steps = $steps;
-
-        return $this;
-    }
+  
 
     public function getPicture(): ?string
     {
@@ -260,6 +250,18 @@ class Recipe
                 $composition->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSteps(): ?array
+    {
+        return $this->steps;
+    }
+
+    public function setSteps(?array $steps): self
+    {
+        $this->steps = $steps;
 
         return $this;
     }

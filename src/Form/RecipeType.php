@@ -21,7 +21,6 @@ class RecipeType extends AbstractType
             ->add('heatTime')
             ->add('prepTime')
             ->add('portion')
-            ->add('steps')
             ->add('picture')
             ->add('virtue', EntityType::class, [
                 'class' => Virtue::class,

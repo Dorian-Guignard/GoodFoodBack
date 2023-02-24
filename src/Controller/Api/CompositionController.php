@@ -74,7 +74,7 @@ class CompositionController extends AbstractController
         $patchComposition = $composition
             ->setUnity($jsonContent['unity'])
             ->setQuantity($jsonContent['quantity']);
-            
+
 
         $entityManager->persist($patchComposition);
 
@@ -91,7 +91,7 @@ class CompositionController extends AbstractController
             ['groups' => 'compositions_get_item']
         );
     }
-    
+
     /**
      * Create composition
      * 
@@ -104,7 +104,7 @@ class CompositionController extends AbstractController
 
 
         $composition = $serializer->deserialize($jsonContent, Composition::class, "json");
-        
+
         $errors = $validator->validate($composition);
 
         $errorsList = [];
@@ -139,6 +139,7 @@ class CompositionController extends AbstractController
             ['groups' => 'compositions_get_item']
         );
     }
+
 
     /**
      * Delete composition

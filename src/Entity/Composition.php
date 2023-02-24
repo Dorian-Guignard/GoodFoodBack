@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Repository\RecipeRepository;
+use App\Entity\Recipe;
 use App\Repository\CompositionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
@@ -26,14 +28,14 @@ class Composition
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="compositions")
+     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="compositions)", 
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"compositions_get_collection", "compositions_get_item"})
      */
     private $recipe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions")
+     * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions"), 
      * @Groups({"compositions_get_collection", "compositions_get_item"})
      */
     private $food;

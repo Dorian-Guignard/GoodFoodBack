@@ -132,6 +132,8 @@ class RecipeController extends AbstractController
 
         $recipe = $serializer->deserialize($jsonContent, Recipe::class, "json");
 
+        var_dump($recipe);
+
         $errors = $validator->validate($recipe);
 
         $errorsList = [];
