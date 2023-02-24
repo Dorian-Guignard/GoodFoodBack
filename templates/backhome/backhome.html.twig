@@ -70,9 +70,10 @@
     <div class="card-body">
       <h5 class="card-title">Utilisateurs</h5>
         <p class="card-text"> Création et moddification des utilisateurs</p>
-     <a class="btn btn-success" href="#" class="card-link">Create new </a>
-   <a class="btn btn-warning" href="#"  class="card-link">Index </a>
+     <a class="btn btn-success" href="{{ path('app_user_new') }}" class="card-link">Create new </a>
+   <a class="btn btn-warning" href="{{ path('app_user_index') }}"  class="card-link">Index </a>
     </div>
   </div>
 </div>
+
 {% endblock %}

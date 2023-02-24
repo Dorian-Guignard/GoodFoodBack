@@ -75,14 +75,14 @@ class Recipe
     private $picture;
 
     /**
-     * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true, cascade={"persist", "remove"})
      * @Ignore()
      * @Groups({"recipes_get_collection"})
      */
     private $compositions;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes"))
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"recipes_get_collection"})
      * 
@@ -90,7 +90,7 @@ class Recipe
     private $virtue;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="recipes", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="recipes")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"recipes_get_collection"})
      */

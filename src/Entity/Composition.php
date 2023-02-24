@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints;
 
 /**
  * @ORM\Entity(repositoryClass=CompositionRepository::class)
- * @UniqueEntity("name")
+ * 
  */
 class Composition
 {
@@ -28,14 +28,14 @@ class Composition
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="compositions)", 
+     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="compositions")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"compositions_get_collection", "compositions_get_item"})
      */
     private $recipe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions"), 
+     * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions")
      * @Groups({"compositions_get_collection", "compositions_get_item"})
      */
     private $food;

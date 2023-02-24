@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Composition;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CompositionRepository;
+use Attribute;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +23,7 @@ class CompositionController extends AbstractController
     {
         $compositions = $compositionRepository->findAll();
 
-        return $this->json([
+        return $this->json(
 
             ['compositions' => $compositions],
 
@@ -31,7 +32,7 @@ class CompositionController extends AbstractController
             [],
 
             ['groups' => "compositions_get_collection"]
-        ]);
+        );
     }
     /**
      * Get compositions item
