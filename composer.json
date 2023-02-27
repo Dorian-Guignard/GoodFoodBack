@@ -86,5 +86,6 @@
         "symfony/stopwatch": "5.4.*",
         "symfony/var-dumper": "5.4.*",
         "symfony/web-profiler-bundle": "5.4.*"
+        
     }
 }
