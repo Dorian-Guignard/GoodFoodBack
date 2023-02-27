@@ -1,3 +1,15 @@
+
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+# pour le logout
+# @see https://symfony.com/doc/5.4/security.html#logging-out
+app_logout:
+    path: /logout
+    methods: GET
+
+# Login LexikJWT
+# @see https://github.com/lexik/LexikJWTAuthenticationBundle/blob/2.x/Resources/doc/index.rst#configure-application-routing
+api_login_check:
+    path: /api/login_check

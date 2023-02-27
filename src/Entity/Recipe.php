@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use App\Entity\Virtue;
 use App\Entity\Composition;
 use App\Repository\RecipeRepository;
@@ -25,7 +26,7 @@ class Recipe
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * 
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $id;
 
@@ -66,8 +67,6 @@ class Recipe
      */
     private $portion;
 
-   
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"recipes_get_collection", "recipes_get_item"})
@@ -77,14 +76,14 @@ class Recipe
     /**
      * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true, cascade={"persist", "remove"})
      * @Ignore()
-     * @Groups({"recipes_get_collection"})
+     * 
      */
     private $compositions;
 
     /**
      * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes"))
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"recipes_get_collection"})
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      * 
      */
     private $virtue;
@@ -92,17 +91,19 @@ class Recipe
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="recipes")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"recipes_get_collection"})
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $steps = [];
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
+     * 
      */
     private $user;
 
@@ -190,7 +191,7 @@ class Recipe
 
         return $this;
     }
-  
+
 
     public function getPicture(): ?string
     {

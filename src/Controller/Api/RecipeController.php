@@ -24,18 +24,20 @@ class RecipeController extends AbstractController
     /**
      * @Route("/api/recipes", name="app_api_recipes", methods={"GET"})
      */
-    public function index(RecipeRepository $recipeRepository): JsonResponse
+    public function index(Recipe $recipe = null, RecipeRepository $recipeRepository): JsonResponse
     {
         $recipes = $recipeRepository->findAll();
 
+
+        if ($recipes === null) {
+            return $this->json(['message' => 'recettes non trouvées.'], Response::HTTP_NOT_FOUND);
+        }
+        
+
         return $this->json(
-
-            ['recipes' => $recipes],
-
+            ['recipe' => $recipes],
             Response::HTTP_OK,
-
             [],
-
             ['groups' => "recipes_get_collection"]
         );
     }
@@ -158,7 +160,7 @@ class RecipeController extends AbstractController
             $newComposition = new Composition();
             $newComposition->setFood($food)->setQuantity($composition['quantity'])->setUnity($composition['unity']);
 
-             // 4. Ajouter chaque composition à partir de recipe avec addComposition()
+            // 4. Ajouter chaque composition à partir de recipe avec addComposition()
             $recipe->addComposition($newComposition);
         }
 
