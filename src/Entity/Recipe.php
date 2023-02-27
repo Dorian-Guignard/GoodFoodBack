@@ -97,7 +97,7 @@ class Recipe
 
     /**
      * @ORM\Column(type="array", nullable=true)
-     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * 
      */
     private $steps = [];
 

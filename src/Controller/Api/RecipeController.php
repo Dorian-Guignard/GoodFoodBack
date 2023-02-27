@@ -32,7 +32,7 @@ class RecipeController extends AbstractController
         if ($recipes === null) {
             return $this->json(['message' => 'recettes non trouvées.'], Response::HTTP_NOT_FOUND);
         }
-        
+
 
         return $this->json(
             ['recipe' => $recipes],
@@ -54,8 +54,7 @@ class RecipeController extends AbstractController
 
             return $this->json(['message' => 'recette non trouvée.'], Response::HTTP_NOT_FOUND);
         }
-
-        $recipeData = [
+        /*         $recipeData = [
 
             [
                 'recipe' => $recipe,
@@ -71,11 +70,11 @@ class RecipeController extends AbstractController
                     'description' => $recipe->getVirtue()
                 ],
             ]
-        ];
+        ]; */
 
         return $this->json(
 
-            ['recipe' => $recipeData],
+            ['recipe' => $recipe],
 
             Response::HTTP_OK,
 

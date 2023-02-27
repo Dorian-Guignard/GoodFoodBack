@@ -27,7 +27,7 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"categories_get_collection", "categories_get_item", "recipes_get_collection"})
+     * @Groups({"categories_get_collection", "categories_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $name;
 
