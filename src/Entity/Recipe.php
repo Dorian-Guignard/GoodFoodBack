@@ -101,6 +101,11 @@ class Recipe
      */
     private $steps = [];
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->compositions = new ArrayCollection();
@@ -262,6 +267,18 @@ class Recipe
     public function setSteps(?array $steps): self
     {
         $this->steps = $steps;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -1,6 +1,11 @@
 #### GOODFOOD
 
 ### LISTE DES ETAPES BACK
+Mail: admin@goodfood.com
+
+Role: ADMIN
+
+MDP: admin // $2y$13$hR5xYQcNZmBDIXsbyiFg8upep8MDzLH.ABOVBIbYVICumg4Peq5ui
 
 # 1: FAIT
 

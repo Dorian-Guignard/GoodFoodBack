@@ -11,6 +11,23 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
+        
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        # firewall pour les routes de l'API (JWT sera actif sur ces routes)
+        api:
+            # tous les "path" qui commencent par /api
+            pattern:   ^/api
+            stateless: true
+            jwt: ~
+
+        
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -29,7 +46,15 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+          - { path: ^/backhome, roles: ROLE_ADMIN } 
+          - { path: ^/(food|category|virtue|user)/new, roles: ROLE_ADMIN, methods: [GET, POST] }
+          - { path: ^/(food|category|virtue|user)/\d+/edit, roles: ROLE_ADMIN, methods: [GET, POST] }
+          - { path: ^/(food|category|virtue|user)/\d+, roles: ROLE_ADMIN, methods: POST }
 
+
+          - { path: ^/api/recipes, roles: ROLE_USER, methods: POST }
+          - { path: ^/api/recipes/\d+, roles: ROLE_USER, methods: PATCH }
+        # - { path: ^/user/(profile|edit), roles: ROLE_USER }
 when@test:
     security:
         password_hashers:
