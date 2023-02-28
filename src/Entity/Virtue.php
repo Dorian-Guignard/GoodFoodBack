@@ -52,7 +52,7 @@ class Virtue
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"virtues_get_collection", "virtues_get_item"})
-     * @Assert\NotBlank
+     * 
      */
     private $picture;
 

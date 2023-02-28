@@ -47,10 +47,14 @@ class RecipeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_recipe_show", methods={"GET"})
+     * @Route("recipe/{id}", name="app_recipe_show", methods={"GET"})
      */
     public function show(Recipe $recipe): Response
     {
+        if ($recipe === null) {
+            throw $this->createNotFoundException("Cette recette n'existe pas");
+        }
+
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
         ]);

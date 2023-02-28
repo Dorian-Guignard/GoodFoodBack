@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use App\Entity\Virtue;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,7 +16,7 @@ class VirtueType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('picture')
+            ->add('picture', FileType::class)
         ;
     }
 
@@ -24,4 +26,6 @@ class VirtueType extends AbstractType
             'data_class' => Virtue::class,
         ]);
     }
+
+
 }

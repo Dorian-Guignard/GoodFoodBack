@@ -51,6 +51,10 @@ class CategoryController extends AbstractController
      */
     public function show(Category $category): Response
     {
+
+        if ($category === null) {
+            throw $this->createNotFoundException("Cette category n'existe pas");
+        }
         return $this->render('category/show.html.twig', [
             'category' => $category,
         ]);

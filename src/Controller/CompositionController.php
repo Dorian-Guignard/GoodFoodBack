@@ -51,6 +51,10 @@ class CompositionController extends AbstractController
      */
     public function show(Composition $composition): Response
     {
+
+        if ($composition === null) {
+            throw $this->createNotFoundException("Cette composition n'existe pas");
+        }
         return $this->render('composition/show.html.twig', [
             'composition' => $composition,
         ]);

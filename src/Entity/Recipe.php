@@ -27,12 +27,14 @@ class Recipe
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $id;
 
     /**
      * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $name;
 
@@ -46,24 +48,28 @@ class Recipe
     /**
      * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
      */
     private $duration;
 
     /**
      * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\NotBlank
      */
     private $heatTime;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $prepTime;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $portion;
 
@@ -76,7 +82,7 @@ class Recipe
     /**
      * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true, cascade={"persist", "remove"})
      * @Groups({"recipes_get_collection", "recipes_get_item"})
-     * 
+     * @Assert\NotBlank
      */
     private $compositions;
 
@@ -84,7 +90,7 @@ class Recipe
      * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes"))
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"recipes_get_collection", "recipes_get_item"})
-     * 
+     * @Assert\NotBlank
      */
     private $virtue;
 
@@ -92,6 +98,7 @@ class Recipe
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="recipes")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $category;
 

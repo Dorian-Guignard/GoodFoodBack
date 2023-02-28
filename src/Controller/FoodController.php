@@ -47,10 +47,17 @@ class FoodController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_food_show", methods={"GET"})
+     * @Route("food/{id}", name="app_food_show", methods={"GET"})
      */
     public function show(Food $food): Response
     {
+
+        if ($food === null) {
+        return $this->createNotFoundException("Cette aliment n'existe pas");
+            /* return $this->render('error403.html.twig', [
+                'food' => $food,
+            ]); */
+        }
         return $this->render('food/show.html.twig', [
             'food' => $food,
         ]);

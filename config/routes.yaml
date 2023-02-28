@@ -13,3 +13,12 @@ app_logout:
 # @see https://github.com/lexik/LexikJWTAuthenticationBundle/blob/2.x/Resources/doc/index.rst#configure-application-routing
 api_login_check:
     path: /api/login_check
+
+
+# config/routes.yaml
+
+not_found:
+    path: /{wildcard}
+    controller: App\Controller\DefaultController::notFound
+    requirements:
+        wildcard: ".*"

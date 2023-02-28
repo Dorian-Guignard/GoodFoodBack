@@ -51,6 +51,10 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
+
+        if ($user === null) {
+            throw $this->createNotFoundException("Ce user n'existe pas");
+        }
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
