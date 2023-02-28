@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Food;
 use App\Form\FoodType;
 use App\Repository\FoodRepository;
+use phpDocumentor\Reflection\Location;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,16 +48,14 @@ class FoodController extends AbstractController
     }
 
     /**
-     * @Route("food/{id}", name="app_food_show", methods={"GET"})
+     * @Route("/{id}", name="app_food_show", methods={"GET"})
      */
     public function show(Food $food): Response
     {
 
         if ($food === null) {
-        return $this->createNotFoundException("Cette aliment n'existe pas");
-            /* return $this->render('error403.html.twig', [
-                'food' => $food,
-            ]); */
+       
+            
         }
         return $this->render('food/show.html.twig', [
             'food' => $food,

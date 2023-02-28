@@ -15,10 +15,4 @@ api_login_check:
     path: /api/login_check
 
 
-# config/routes.yaml
 
-not_found:
-    path: /{wildcard}
-    controller: App\Controller\DefaultController::notFound
-    requirements:
-        wildcard: ".*"
