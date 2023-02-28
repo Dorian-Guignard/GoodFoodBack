@@ -20,13 +20,13 @@ class Food
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"foods_get_collection", "foods_get_item"})
+     * @Groups({"foods_get_collection", "foods_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"foods_get_collection", "foods_get_item"})
+     * @Groups({"foods_get_collection", "foods_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $name;
 

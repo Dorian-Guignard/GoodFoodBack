@@ -36,19 +36,19 @@ class Composition
 
     /**
      * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions")
-     * @Groups({"compositions_get_collection", "compositions_get_item"})
+     * @Groups({"compositions_get_collection", "recipes_get_collection", "recipes_get_item"})
      */
     private $food;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
-     * @Groups({"compositions_get_collection", "compositions_get_item"})
+     * @Groups({"compositions_get_collection", "compositions_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $unity;
 
     /**
      * @ORM\Column(type="integer",nullable=true)
-     * @Groups({"compositions_get_collection", "compositions_get_item"})
+     * @Groups({"compositions_get_collection", "compositions_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $quantity;
 

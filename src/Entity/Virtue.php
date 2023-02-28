@@ -32,7 +32,7 @@ class Virtue
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Groups({"virtues_get_collection", "virtues_get_item", "recipes_get_collection"})
+     * @Groups({"virtues_get_collection", "virtues_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $name;
 

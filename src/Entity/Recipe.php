@@ -75,7 +75,7 @@ class Recipe
 
     /**
      * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true, cascade={"persist", "remove"})
-     * @Ignore()
+     * @Ignore
      * 
      */
     private $compositions;
@@ -97,13 +97,13 @@ class Recipe
 
     /**
      * @ORM\Column(type="array", nullable=true)
-     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * 
      */
     private $steps = [];
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
-     * 
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $user;
 
