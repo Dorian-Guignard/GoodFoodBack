@@ -58,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Recipe::class, mappedBy="user")
+     * @Groups({"users_get_collection", "users_get_item"})
      */
     private $recipes;
 

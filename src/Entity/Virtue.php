@@ -23,9 +23,8 @@ class Virtue
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * 
      * @ORM\Column(type="integer")
-     * @Groups({"virtues_get_collection", "virtues_get_item"})
+     * @Groups({"virtues_get_collection", "virtues_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $id;
 
@@ -50,18 +49,17 @@ class Virtue
      */
     private $recipes;
 
-    public function __construct()
-    {
-        $this->recipes = new ArrayCollection();
-    }
-
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"virtues_get_collection", "virtues_get_item"})
      * @Assert\NotBlank
      */
     private $picture;
+
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

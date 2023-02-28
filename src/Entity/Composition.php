@@ -30,13 +30,13 @@ class Composition
     /**
      * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="compositions")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"compositions_get_collection", "compositions_get_item"})
+     * @Ignore
      */
     private $recipe;
 
     /**
      * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions")
-     * @Groups({"compositions_get_collection", "recipes_get_collection", "recipes_get_item"})
+     * @Groups({"compositions_get_collection", "compositions_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $food;
 
