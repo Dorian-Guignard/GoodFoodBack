@@ -75,7 +75,7 @@ security:
         roles: ROLE_ADMIN,
         methods: POST,
       }
-
+    - { path: ^/api/login, roles: PUBLIC_ACCESS }
     - { path: ^/api/recipes, roles: ROLE_USER, methods: POST }
     - { path: ^/api/recipes/\d+, roles: ROLE_USER, methods: PATCH }
     # - { path: ^/user/(profile|edit), roles: ROLE_USER }
