@@ -7,11 +7,9 @@ use App\Entity\Recipe;
 use App\Repository\CompositionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CompositionRepository::class)
@@ -23,7 +21,7 @@ class Composition
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"compositions_get_collection", "virtues_get_item"})
+     * @Groups({"compositions_get_collection", "compositions_get_item"})
      */
     private $id;
 

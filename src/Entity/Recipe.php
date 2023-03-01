@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\User;
 use App\Entity\Virtue;
 use App\Entity\Composition;
+use App\Entity\Steps;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\VirtueRepository;
@@ -102,11 +103,7 @@ class Recipe
      */
     private $category;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     * @Groups({"recipes_get_collection", "recipes_get_item"})
-     */
-    private $steps = [];
+  
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
@@ -114,11 +111,19 @@ class Recipe
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Steps::class, mappedBy="recipe")
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
+     */
+    private $steps;
+
     public function __construct()
     {
         $this->compositions = new ArrayCollection();
         /*         $this->virtue = new ArrayCollection();
         $this->category = new ArrayCollection(); */
+        $this->steps = new ArrayCollection();
     }
 
 
@@ -267,17 +272,7 @@ class Recipe
         return $this;
     }
 
-    public function getSteps(): ?array
-    {
-        return $this->steps;
-    }
 
-    public function setSteps(?array $steps): self
-    {
-        $this->steps = $steps;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -287,6 +282,36 @@ class Recipe
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Steps>
+     */
+    public function getSteps(): Collection
+    {
+        return $this->steps;
+    }
+
+    public function addStep(Steps $step): self
+    {
+        if (!$this->steps->contains($step)) {
+            $this->steps[] = $step;
+            $step->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStep(Steps $step): self
+    {
+        if ($this->steps->removeElement($step)) {
+            // set the owning side to null (unless already changed)
+            if ($step->getRecipe() === $this) {
+                $step->setRecipe(null);
+            }
+        }
 
         return $this;
     }

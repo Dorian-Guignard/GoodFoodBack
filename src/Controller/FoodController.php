@@ -9,7 +9,9 @@ use phpDocumentor\Reflection\Location;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 /**
  * @Route("/food")
@@ -48,13 +50,14 @@ class FoodController extends AbstractController
     }
 
     /**
+     *
      * @Route("/{id}", name="app_food_show", methods={"GET"})
      */
     public function show(Food $food): Response
     {
 
         if ($food === null) {
-            throw $this->createNotFoundException("cette aliment n'existe pas");
+            return $this->createNotFoundException();
             
         }
         return $this->render('food/show.html.twig', [

@@ -99,6 +99,7 @@ class RecipeController extends AbstractController
 
         $jsonContent = json_decode($request->getContent(), true);
 
+        if (isset($jsonContent['name'], $jsonContent['description'], $jsonContent['duration'], $jsonContent['heatTime'], $jsonContent['prepTime'], $jsonContent['portion'])){
         $patchRecipe = $Recipe
             ->setName($jsonContent['name'])
             ->setDescription($jsonContent['description'])
@@ -106,8 +107,10 @@ class RecipeController extends AbstractController
             ->setHeatTime($jsonContent['heatTime'])
             ->setPrepTime($jsonContent['prepTime'])
             ->setPortion($jsonContent['portion'])
-            ->setSteps($jsonContent['steps'])
             ->setPicture($jsonContent['picture']);
+        } else {
+            throw new \Exception('Données de requête manquantes ou invalides');
+        }
 
         $entityManager->persist($patchRecipe);
 
