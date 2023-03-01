@@ -54,7 +54,7 @@ class FoodController extends AbstractController
     {
 
         if ($food === null) {
-       
+            throw $this->createNotFoundException("cette aliment n'existe pas");
             
         }
         return $this->render('food/show.html.twig', [
