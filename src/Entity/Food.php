@@ -42,6 +42,11 @@ class Food
      */
     private $compositions;
 
+        public function __toString()
+    {
+        return ''.$this->getName();
+    }
+
     public function __construct()
     {
         $this->compositions = new ArrayCollection();

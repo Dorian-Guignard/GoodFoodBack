@@ -50,6 +50,12 @@ class Composition
      */
     private $quantity;
 
+    public function __toString()
+    {
+        return ''.$this->getFood();
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

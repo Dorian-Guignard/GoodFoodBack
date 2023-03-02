@@ -44,3 +44,21 @@ footer nav{
     padding-left: 2%;
     border-radius: 5%;
 }
+
+body{
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-left: 10%;
+    padding-right: 10%; 
+    
+}
+
+.border_form
+{
+border:black 2px solid;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+

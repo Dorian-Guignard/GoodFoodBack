@@ -3,7 +3,7 @@
 {% block title %}Recipe{% endblock %}
 
 {% block body %}
-<div class = "backshow">
+<div class = "backshow" "border_form">
     <h1>Recipe</h1>
 
     <table class="table">
@@ -38,8 +38,19 @@
             </tr>
             <tr>
                 <th>Steps</th>
-                <td>{{ recipe.steps ? recipe.steps|join(', ') : '' }}</td>
-            </tr>
+                <td>
+                    {% for step in recipe.steps %}
+                    {{ step.getName() }}. {{ step.content }}<br>
+                    {% endfor %}
+                </td>
+                <tr>
+                 <th>Ingredients</th>
+                 <td>
+                    {% for compositions in recipe.compositions %}
+                    {{ compositions.food }}<br>
+                    {% endfor %}
+                </td>               
+                </tr>
             <tr>
                 <th>Picture</th>
                 <td>{{ recipe.picture }}</td>

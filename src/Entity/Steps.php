@@ -28,7 +28,7 @@ class Steps
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="integer", length=20)
      * @Assert\NotBlank
      * @Groups({"steps_get_collection", "steps_get_item", "recipes_get_collection", "recipes_get_item"})
      */
@@ -48,17 +48,22 @@ class Steps
      */
     private $recipe;
 
+    public function __toString()
+    {
+        return ''.$this->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): ?int
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(int $name): self
     {
         $this->name = $name;
 

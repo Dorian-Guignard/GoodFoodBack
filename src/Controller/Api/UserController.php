@@ -79,7 +79,7 @@ class UserController extends AbstractController
 
 
         $patchUser = $user
-            ->setUsername($jsonContent['name'])
+            ->setPseudo($jsonContent['name'])
             ->setPassword($jsonContent['password'])
             ->setEmail($jsonContent['email'])
             ->setRoles($jsonContent['roles'])
