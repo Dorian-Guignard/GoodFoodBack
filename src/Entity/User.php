@@ -40,18 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"users_get_collection", "users_get_item"})
-    */
-    private $pseudo;
-
-    /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      * @Groups({"users_get_collection", "users_get_item"})
      */
     private $password;
-
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -187,19 +180,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->recipes[] = $recipe;
             $recipe->setUser($this);
         }
-
-        return $this;
-    }
-
-
-    public function getPseudo(): string
-    {
-        return (string) $this->pseudo;
-    }
-
-        public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
 
         return $this;
     }
