@@ -84,7 +84,9 @@ class UserController extends AbstractController
             ->setPassword($jsonContent['password'])
             ->setEmail($jsonContent['email'])
             ->setRoles($jsonContent['roles'])
-            ->setAvatar($jsonContent['avatar']);
+            ->setAvatar($jsonContent['avatar'])
+            ->setNameUser($jsonContent['nameUser']);
+            
 
 
         $entityManager->persist($patchUser);
@@ -119,7 +121,7 @@ public function create(Request $request, SerializerInterface $serializer, Valida
     $plainPassword = $user->getPassword();
 
     $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
-    
+
     $user->setPassword($hashedPassword);
 
     $errors = $validator->validate($user);

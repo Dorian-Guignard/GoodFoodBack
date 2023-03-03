@@ -59,6 +59,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $recipes;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"users_get_collection", "users_get_item"})
+     */
+    private $nameUser;
+
     public function __construct()
     {
         $this->recipes = new ArrayCollection();
@@ -194,6 +200,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $recipe->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNameUser(): ?string
+    {
+        return $this->nameUser;
+    }
+
+    public function setNameUser(?string $nameUser): self
+    {
+        $this->nameUser = $nameUser;
 
         return $this;
     }
