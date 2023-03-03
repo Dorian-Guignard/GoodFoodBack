@@ -16,8 +16,7 @@ class VirtueType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('picture', FileType::class)
-        ;
+            ->add('picture');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -26,6 +25,4 @@ class VirtueType extends AbstractType
             'data_class' => Virtue::class,
         ]);
     }
-
-
 }

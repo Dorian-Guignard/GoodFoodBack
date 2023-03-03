@@ -47,7 +47,7 @@ class RecipeController extends AbstractController
     }
 
     /**
-     * @Route("recipe/{id}", name="app_recipe_show", methods={"GET"})
+     * @Route("/{id}", name="app_recipe_show", methods={"GET"})
      */
     public function show(Recipe $recipe): Response
     {

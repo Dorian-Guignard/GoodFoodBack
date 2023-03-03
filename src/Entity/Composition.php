@@ -45,14 +45,14 @@ class Composition
     private $unity;
 
     /**
-     * @ORM\Column(type="integer",nullable=true)
+     * @ORM\Column(type="string",nullable=true)
      * @Groups({"compositions_get_collection", "compositions_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $quantity;
 
     public function __toString()
     {
-        return ''.$this->getFood();
+        return '' . $this->getFood();
     }
 
 
@@ -97,12 +97,12 @@ class Composition
         return $this;
     }
 
-    public function getQuantity(): ?int
+    public function getQuantity(): ?string
     {
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): self
+    public function setQuantity(string $quantity): self
     {
         $this->quantity = $quantity;
 
