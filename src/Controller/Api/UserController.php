@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -79,7 +80,7 @@ class UserController extends AbstractController
 
 
         $patchUser = $user
-            
+
             ->setPassword($jsonContent['password'])
             ->setEmail($jsonContent['email'])
             ->setRoles($jsonContent['roles'])
@@ -103,52 +104,58 @@ class UserController extends AbstractController
     }
 
     /**
-     * Create user
-     * 
-     * @Route("/api/users", name="app_api_post_users_item", methods={"POST"})
-     */
-    public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager)
-    {
+ * Create user
+ * 
+ * @Route("/api/users", name="app_api_post_users_item", methods={"POST"})
+ */
+public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
+{
 
-        $jsonContent = $request->getContent();
+    $jsonContent = $request->getContent();
 
+    $user = $serializer->deserialize($jsonContent, User::class, "json");
 
-        $user = $serializer->deserialize($jsonContent, User::class, "json");
+    // Hash the password
+    $plainPassword = $user->getPassword();
 
-        $errors = $validator->validate($user);
+    $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+    
+    $user->setPassword($hashedPassword);
 
-        $errorsList = [];
-        if (count($errors) > 0) {
+    $errors = $validator->validate($user);
 
-            foreach ($errors as $error) {
+    $errorsList = [];
+    if (count($errors) > 0) {
 
-                $errorsList[$error->getPropertyPath()][] = $error->getMessage();
-            }
+        foreach ($errors as $error) {
 
-            return $this->json($errorsList, Response::HTTP_UNPROCESSABLE_ENTITY);
+            $errorsList[$error->getPropertyPath()][] = $error->getMessage();
         }
 
-        $entityManager->persist($user);
-
-        $entityManager->flush();
-
-
-        return $this->json(
-
-            ['user' => $user],
-
-            Response::HTTP_CREATED,
-
-            [
-                'Location' => $this->generateUrl(
-                    'app_api_users_get_item',
-                    ['id' => $user->getId()]
-                )
-            ],
-
-            ['groups' => 'users_get_item']
-        );
+        return $this->json($errorsList, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
+
+    $entityManager->persist($user);
+
+    $entityManager->flush();
+
+
+    return $this->json(
+
+        ['user' => $user],
+
+        Response::HTTP_CREATED,
+
+        [
+            'Location' => $this->generateUrl(
+                'app_api_users_get_item',
+                ['id' => $user->getId()]
+            )
+        ],
+
+        ['groups' => 'users_get_item']
+    );
+}
     /**
      * Delete user
      * 
