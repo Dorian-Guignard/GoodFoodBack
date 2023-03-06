@@ -1,14 +1,17 @@
 <?php
 
 namespace App\Form;
-use Symfony\Bridge\Doctrine\Form\Type\ArrayType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+use App\Entity\Recipe;
 use App\Entity\Virtue;
 use App\Entity\Category;
-use App\Entity\Recipe;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File as FileConstraint;
 
 class RecipeType extends AbstractType
 {
@@ -25,14 +28,27 @@ class RecipeType extends AbstractType
             ->add('virtue', EntityType::class, [
                 'class' => Virtue::class,
                 'choice_label' => 'name',
-                
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
-               
             ])
-        ;
+            ->add('name_image', FileType::class, [
+                'label' => 'Image de votre recette',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new FileConstraint([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image (JPEG, PNG, GIF)',
+                    ]),
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

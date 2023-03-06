@@ -3,9 +3,11 @@
 {% block title %}New User{% endblock %}
 
 {% block body %}
+<div class="backshow">
     <h1>Create new User</h1>
 
     {{ include('user/_form.html.twig') }}
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+    <a <a class="btn btn-info" href="{{ path('app_user_index') }}">back to list</a>
+</div>
 {% endblock %}

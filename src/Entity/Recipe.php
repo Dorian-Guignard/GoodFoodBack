@@ -103,7 +103,10 @@ class Recipe
      */
     private $category;
 
-  
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $nameImage;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
@@ -124,6 +127,7 @@ class Recipe
         /*         $this->virtue = new ArrayCollection();
         $this->category = new ArrayCollection(); */
         $this->steps = new ArrayCollection();
+        $this->id = 0;
     }
 
 
@@ -312,6 +316,26 @@ class Recipe
                 $step->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of nameImage
+     */
+    public function getNameImage()
+    {
+        return $this->nameImage;
+    }
+
+    /**
+     * Set the value of nameImage
+     *
+     * @return  self
+     */
+    public function setNameImage($nameImage)
+    {
+        $this->nameImage = $nameImage;
 
         return $this;
     }

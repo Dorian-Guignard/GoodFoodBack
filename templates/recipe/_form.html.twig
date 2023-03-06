@@ -1,5 +1,5 @@
 
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
     {{ form_widget(form) }}
    
     <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
