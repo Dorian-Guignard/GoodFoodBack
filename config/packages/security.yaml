@@ -50,7 +50,8 @@ security:
       logout:
         # nom de la route qui va déclencher la déconnexion
         # que le composant de sécurité prend en charge
-        path: app_logout
+        path:
+          app_logout
           # redirection après logout (par défaut on retourne sur /)
           # https://symfony.com/doc/current/reference/configuration/security.html#target
         target: /login
@@ -62,6 +63,11 @@ security:
     - { path: ^/backhome, roles: ROLE_ADMIN }
     - {
         path: ^/(food|category|virtue|user)/new,
+        roles: ROLE_ADMIN,
+        methods: [GET, POST],
+      }
+    - {
+        path: ^/(food|category|virtue|user|recipe),
         roles: ROLE_ADMIN,
         methods: [GET, POST],
       }

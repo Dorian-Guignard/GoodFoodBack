@@ -24,17 +24,8 @@ class RecipeType extends AbstractType
             ->add('heatTime')
             ->add('prepTime')
             ->add('portion')
-            ->add('picture')
-            ->add('virtue', EntityType::class, [
-                'class' => Virtue::class,
-                'choice_label' => 'name',
-            ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-            ])
-            ->add('name_image', FileType::class, [
-                'label' => 'Image de votre recette',
+            ->add('nameImage', FileType::class, [
+                'label' => 'Image (JPG, PNG, JPEG, GIF file)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -43,12 +34,22 @@ class RecipeType extends AbstractType
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
+                            'image/jpg',
                             'image/gif',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid image (JPEG, PNG, GIF)',
-                    ]),
+                        'mimeTypesMessage' => 'Please upload a valid JPG, PNG, JPEG or GIF image',
+                    ])
                 ],
-            ]);
+            ])
+            ->add('virtue', EntityType::class, [
+                'class' => Virtue::class,
+                'choice_label' => 'name',
+            ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -16,6 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints;
+use App\Controller\Api\RecipeController;
+use PhpParser\Node\Expr\New_;
+use Vich\UploaderBundle\Util\FilenameUtils;
 
 /**
  * @ORM\Entity(repositoryClass=RecipeRepository::class)
@@ -28,7 +31,6 @@ class Recipe
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"recipes_get_collection", "recipes_get_item"})
-     * @Assert\NotBlank
      */
     private $id;
 
@@ -105,12 +107,15 @@ class Recipe
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * 
      */
     private $nameImage;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
      * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * 
      */
     private $user;
 
@@ -124,10 +129,8 @@ class Recipe
     public function __construct()
     {
         $this->compositions = new ArrayCollection();
-        /*         $this->virtue = new ArrayCollection();
-        $this->category = new ArrayCollection(); */
         $this->steps = new ArrayCollection();
-        $this->id = 0;
+      
     }
 
 
@@ -320,23 +323,15 @@ class Recipe
         return $this;
     }
 
-    /**
-     * Get the value of nameImage
-     */
-    public function getNameImage()
-    {
-        return $this->nameImage;
-    }
-
-    /**
-     * Set the value of nameImage
-     *
-     * @return  self
-     */
-    public function setNameImage($nameImage)
+    public function setNameImage(string $nameImage): self
     {
         $this->nameImage = $nameImage;
 
         return $this;
+    }
+
+    public function getNameImage(): ?string
+    {
+        return $this->nameImage;
     }
 }

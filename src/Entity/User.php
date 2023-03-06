@@ -17,6 +17,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"nameUser"}, message="There is already an account with this nameUser")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -69,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->recipes = new ArrayCollection();
         /* $this->password =  */
+        
     }
 
     public function getId(): ?int

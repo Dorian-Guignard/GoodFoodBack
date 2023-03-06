@@ -36,12 +36,13 @@ class RecipeController extends AbstractController
         $recipe = new Recipe();
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
-
+        //var_dump($form->get('nameImage')->getData());
         if ($form->isSubmitted() && $form->isValid()) {
             $recipeRepository->add($recipe, true);
 
             /** @var UploadedFile $imageFile */
-            $imageFile = $form->get('name_image')->getData();
+            $imageFile = $form->get('nameImage')->getData();
+
             // this condition is needed because the 'image' field is not required
             // so the image file must be processed only when a file is uploaded
             if ($imageFile) {
@@ -65,7 +66,7 @@ class RecipeController extends AbstractController
                 // updates the 'nameImage' property to store the image file name
                 // instead of its contents
                 $recipe->setNameImage($newFilename);
-                
+                var_dump($newFilename);
             }
 
             return $this->redirectToRoute('app_recipe_index', [], Response::HTTP_SEE_OTHER);
@@ -74,6 +75,7 @@ class RecipeController extends AbstractController
         return $this->renderForm('recipe/new.html.twig', [
             'recipe' => $recipe,
             'form' => $form,
+            
         ]);
     }
 
