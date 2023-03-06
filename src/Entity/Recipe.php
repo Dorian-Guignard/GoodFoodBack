@@ -1,15 +1,24 @@
 <?php
 
 namespace App\Entity;
+
+use App\Entity\User;
 use App\Entity\Virtue;
 use App\Entity\Composition;
 use App\Repository\RecipeRepository;
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\VirtueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * @ORM\Entity(repositoryClass=RecipeRepository::class)
+ * @UniqueEntity("name")
  */
 class Recipe
 {
@@ -17,82 +26,105 @@ class Recipe
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $id;
 
     /**
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
+     * 
      * @ORM\Column(type="text" , nullable=true)
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $description;
 
     /**
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
      */
     private $duration;
 
     /**
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\NotBlank
      */
     private $heatTime;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $prepTime;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $portion;
-    
-  
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $picture;
 
     /**
-     * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true, cascade={"persist", "remove"})
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $compositions;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes")
+     * @ORM\ManyToOne(targetEntity=Virtue::class, inversedBy="recipes"))
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $virtue;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="recipes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
      */
     private $category;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $steps = [];
+  
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
      */
     private $user;
 
-   
+    /**
+     * @ORM\OneToMany(targetEntity=Steps::class, mappedBy="recipe")
+     * @Groups({"recipes_get_collection", "recipes_get_item"})
+     * @Assert\NotBlank
+     */
+    private $steps;
 
     public function __construct()
     {
         $this->compositions = new ArrayCollection();
+        /*         $this->virtue = new ArrayCollection();
+        $this->category = new ArrayCollection(); */
+        $this->steps = new ArrayCollection();
     }
 
-   
-
-  
 
     public function getId(): ?int
     {
@@ -171,7 +203,6 @@ class Recipe
         return $this;
     }
 
-  
 
     public function getPicture(): ?string
     {
@@ -209,7 +240,7 @@ class Recipe
         return $this;
     }
 
- 
+
     /**
      * @return Collection<int, Composition>
      */
@@ -240,17 +271,7 @@ class Recipe
         return $this;
     }
 
-    public function getSteps(): ?array
-    {
-        return $this->steps;
-    }
 
-    public function setSteps(?array $steps): self
-    {
-        $this->steps = $steps;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -264,6 +285,33 @@ class Recipe
         return $this;
     }
 
- 
+    /**
+     * @return Collection<int, Steps>
+     */
+    public function getSteps(): Collection
+    {
+        return $this->steps;
+    }
 
+    public function addStep(Steps $step): self
+    {
+        if (!$this->steps->contains($step)) {
+            $this->steps[] = $step;
+            $step->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStep(Steps $step): self
+    {
+        if ($this->steps->removeElement($step)) {
+            // set the owning side to null (unless already changed)
+            if ($step->getRecipe() === $this) {
+                $step->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
 }

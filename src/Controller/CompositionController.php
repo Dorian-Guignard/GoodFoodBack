@@ -37,7 +37,7 @@ class CompositionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $compositionRepository->add($composition, true);
 
-            return $this->redirectToRoute('app_composition_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_composition_new', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('composition/new.html.twig', [
