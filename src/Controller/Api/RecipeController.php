@@ -133,30 +133,32 @@ class RecipeController extends AbstractController
      * 
      * @Route("/api/recipes", name="app_api_post_recipes_item", methods={"POST"})
      */
-    public function create(FoodRepository $foodRepository, Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, CategoryRepository $categoryRepo, VirtueRepository $virtueRepo)
+    public function create(FoodRepository $foodRepository, Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, VirtueRepository $virtueRepository)
     {
 
         $jsonContent = $request->getContent();
         $recipe = $serializer->deserialize($jsonContent, Recipe::class, "json", [
-            'attributes_to_skip' => ['compositions', 'virtue', 'category']
+            //'attributes_to_skip' => ['compositions','virtue', 'category']
         ]);
         // 1. Décoder les données de la requete -> mises dans un tableau associatif
         $decodedContent = json_decode($jsonContent, true);
 
+        var_dump($decodedContent);
+
         // On récupère les relations virtue et category par leurs id, puis on les set dans recipe.
         $virtueId = $decodedContent['virtue'];
         $categoryId = $decodedContent['category'];
+        
+        $category = $categoryRepository->find($categoryId);
+        $virtue = $virtueRepository->find($virtueId);
 
-        $category = $categoryRepo->find($categoryId);
-        $virtue = $virtueRepo->find($virtueId);
+        $recipe->setVirtue($virtue)->setCategory($category); 
+        
+         $compositions = $decodedContent['compositions']; 
 
-        $recipe->setVirtue($virtue)->setCategory($category);
-
-        $compositions = $decodedContent['compositions'];
-
-        foreach ($compositions as $composition) {
+         foreach ($compositions as $composition) {
             // 2. Recuperer food pour chaque composition à partir de son id
-            $foodId = $composition['food'];
+            $foodId = $composition['foods'];
             $food = $foodRepository->find($foodId);
 
             // 3. Creer des instances de compositions pour chaques entrées du tableau de composition (et ajouter food recuper avec setFood())
@@ -166,7 +168,7 @@ class RecipeController extends AbstractController
             // 4. Ajouter chaque composition à partir de recipe avec addComposition()
             $recipe->addComposition($newComposition);
         }
-
+ 
 
 
         $errors = $validator->validate($recipe);

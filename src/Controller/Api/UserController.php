@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Constraints\Json;
 
 class UserController extends AbstractController
 {
@@ -86,7 +88,7 @@ class UserController extends AbstractController
             ->setRoles($jsonContent['roles'])
             ->setAvatar($jsonContent['avatar'])
             ->setNameUser($jsonContent['nameUser']);
-            
+
 
 
         $entityManager->persist($patchUser);
@@ -106,58 +108,58 @@ class UserController extends AbstractController
     }
 
     /**
- * Create user
- * 
- * @Route("/api/users", name="app_api_post_users_item", methods={"POST"})
- */
-public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
-{
+     * Create user
+     * 
+     * @Route("/api/users", name="app_api_post_users_item", methods={"POST"})
+     */
+    public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
+    {
 
-    $jsonContent = $request->getContent();
+        $jsonContent = $request->getContent();
 
-    $user = $serializer->deserialize($jsonContent, User::class, "json");
+        $user = $serializer->deserialize($jsonContent, User::class, "json");
 
-    // Hash the password
-    $plainPassword = $user->getPassword();
+        // Hash the password
+        $plainPassword = $user->getPassword();
 
-    $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+        $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
 
-    $user->setPassword($hashedPassword);
+        $user->setPassword($hashedPassword);
 
-    $errors = $validator->validate($user);
+        $errors = $validator->validate($user);
 
-    $errorsList = [];
-    if (count($errors) > 0) {
+        $errorsList = [];
+        if (count($errors) > 0) {
 
-        foreach ($errors as $error) {
+            foreach ($errors as $error) {
 
-            $errorsList[$error->getPropertyPath()][] = $error->getMessage();
+                $errorsList[$error->getPropertyPath()][] = $error->getMessage();
+            }
+
+            return $this->json($errorsList, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return $this->json($errorsList, Response::HTTP_UNPROCESSABLE_ENTITY);
+        $entityManager->persist($user);
+
+        $entityManager->flush();
+
+
+        return $this->json(
+
+            ['user' => $user],
+
+            Response::HTTP_CREATED,
+
+            [
+                'Location' => $this->generateUrl(
+                    'app_api_users_get_item',
+                    ['id' => $user->getId()]
+                )
+            ],
+
+            ['groups' => 'users_get_item']
+        );
     }
-
-    $entityManager->persist($user);
-
-    $entityManager->flush();
-
-
-    return $this->json(
-
-        ['user' => $user],
-
-        Response::HTTP_CREATED,
-
-        [
-            'Location' => $this->generateUrl(
-                'app_api_users_get_item',
-                ['id' => $user->getId()]
-            )
-        ],
-
-        ['groups' => 'users_get_item']
-    );
-}
     /**
      * Delete user
      * 
@@ -175,7 +177,38 @@ public function create(Request $request, SerializerInterface $serializer, Valida
         return $this->json(['message' => 'user supprimée.'], Response::HTTP_OK);
     }
 
+    private $tokenStorage;
 
-    
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
 
+    /**
+     *@Route("/api/usersconnect", name="app_api__usersconnect_item", methods={"GET"}) 
+     */
+    public function getCurrentUser()
+    {
+        $token = $this->tokenStorage->getToken();
+
+        if (!$token) {
+            return $this->json(['message' => 'token non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $user = $token->getUser();
+
+        if (!$user instanceof User) {
+            return $this->json(['message' => 'user non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json(
+            ['user' => $user],
+
+            Response::HTTP_OK,
+
+            [],
+
+            ['groups' => 'users_get_item']
+    );
+    }
 }
