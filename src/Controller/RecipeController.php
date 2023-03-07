@@ -41,8 +41,8 @@ class RecipeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
 
-            /** @var UploadedFile $imageFile */
-            $imageFile = $form->get('nameImage')->getData();
+            /* @var UploadedFile $imageFile */
+            /* $imageFile = $form->get('nameImage')->getData();
 
             // this condition is needed because the 'image' field is not required
             // so the image file must be processed only when a file is uploaded
@@ -71,7 +71,7 @@ class RecipeController extends AbstractController
                 );
 
                 //var_dump($newFilename);
-            }
+            }*/
             $recipeRepository->add($recipe, true);
             return $this->redirectToRoute('app_recipe_index', [], Response::HTTP_SEE_OTHER);
         }

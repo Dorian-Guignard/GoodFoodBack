@@ -104,12 +104,12 @@ class Recipe
      */
     private $category;
 
-    /**
+     /*
      * @ORM\Column(type="string", nullable=true)
      * @Groups({"recipes_get_collection", "recipes_get_item"})
      * 
      */
-    private $nameImage;
+    /* private $nameImage;  */
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
@@ -321,7 +321,7 @@ class Recipe
         return $this;
     }
 
-    public function setNameImage(string $nameImage): self
+/*     public function setNameImage(string $nameImage): self
     {
         $this->nameImage = $nameImage;
 
@@ -331,5 +331,5 @@ class Recipe
     public function getNameImage(): ?string
     {
         return $this->nameImage;
-    }
+    } */
 }
