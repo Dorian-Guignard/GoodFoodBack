@@ -21,6 +21,14 @@ use Symfony\Component\Validator\Constraints\Json;
 
 class UserController extends AbstractController
 {
+
+    private $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     /**
      * @Route("/api/users", name="app_api_users",methods={"GET"})
      */
@@ -71,7 +79,7 @@ class UserController extends AbstractController
      * 
      * @Route("/api/users/{id<\d+>}", name="app_api_patch_users_item", methods={"PATCH"})
      */
-    public function patch(User $user = null, Request $request, EntityManagerInterface $entityManager)
+    public function patch(User $user = null, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
 
         if ($user === null) {
@@ -88,6 +96,8 @@ class UserController extends AbstractController
             ->setRoles($jsonContent['roles'])
             ->setAvatar($jsonContent['avatar'])
             ->setNameUser($jsonContent['nameUser']);
+
+
 
 
 
@@ -177,12 +187,7 @@ class UserController extends AbstractController
         return $this->json(['message' => 'user supprimée.'], Response::HTTP_OK);
     }
 
-    private $tokenStorage;
-
-    public function __construct(TokenStorageInterface $tokenStorage)
-    {
-        $this->tokenStorage = $tokenStorage;
-    }
+    
 
     /**
      *@Route("/api/usersconnect", name="app_api__usersconnect_item", methods={"GET"}) 

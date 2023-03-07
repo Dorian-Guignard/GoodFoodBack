@@ -22,7 +22,6 @@ use Vich\UploaderBundle\Util\FilenameUtils;
 
 /**
  * @ORM\Entity(repositoryClass=RecipeRepository::class)
- * @UniqueEntity("name")
  */
 class Recipe
 {
@@ -120,7 +119,7 @@ class Recipe
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Steps::class, mappedBy="recipe")
+     * @ORM\OneToMany(targetEntity=Steps::class, mappedBy="recipe", cascade={"persist", "remove"})
      * @Groups({"recipes_get_collection", "recipes_get_item"})
      * @Assert\NotBlank
      */
@@ -130,7 +129,6 @@ class Recipe
     {
         $this->compositions = new ArrayCollection();
         $this->steps = new ArrayCollection();
-      
     }
 
 

@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  * @UniqueEntity(fields={"nameUser"}, message="There is already an account with this nameUser")
+ * 
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -32,6 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"users_get_collection", "users_get_item"})
+     * 
      */
     private $email;
 
@@ -56,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Recipe::class, mappedBy="user")
-     * @Ignore
+     * @Ignore()
      */
     private $recipes;
 
@@ -137,8 +139,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(string $password): self
     {
-        $this->password = $password;
-
+        if ($password !== null) {
+            $this->password = $password;
+        }
         return $this;
     }
 

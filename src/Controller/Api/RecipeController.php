@@ -7,6 +7,7 @@ use App\Entity\Virtue;
 use App\Entity\Category;
 use App\Entity\Composition;
 use App\Repository\FoodRepository;
+use App\Repository\UserRepository;
 use App\Repository\RecipeRepository;
 use App\Repository\VirtueRepository;
 use App\Repository\CategoryRepository;
@@ -18,6 +19,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+
 
 class RecipeController extends AbstractController
 {
@@ -32,7 +36,7 @@ class RecipeController extends AbstractController
         if ($recipes === null) {
             return $this->json(['message' => 'recettes non trouvées.'], Response::HTTP_NOT_FOUND);
         }
-        
+
 
         return $this->json(
             ['recipe' => $recipes],
@@ -99,15 +103,15 @@ class RecipeController extends AbstractController
 
         $jsonContent = json_decode($request->getContent(), true);
 
-        if (isset($jsonContent['name'], $jsonContent['description'], $jsonContent['duration'], $jsonContent['heatTime'], $jsonContent['prepTime'], $jsonContent['portion'])){
-        $patchRecipe = $Recipe
-            ->setName($jsonContent['name'])
-            ->setDescription($jsonContent['description'])
-            ->setDuration($jsonContent['duration'])
-            ->setHeatTime($jsonContent['heatTime'])
-            ->setPrepTime($jsonContent['prepTime'])
-            ->setPortion($jsonContent['portion'])
-            ->setPicture($jsonContent['picture']);
+        if (isset($jsonContent['name'], $jsonContent['description'], $jsonContent['duration'], $jsonContent['heatTime'], $jsonContent['prepTime'], $jsonContent['portion'])) {
+            $patchRecipe = $Recipe
+                ->setName($jsonContent['name'])
+                ->setDescription($jsonContent['description'])
+                ->setDuration($jsonContent['duration'])
+                ->setHeatTime($jsonContent['heatTime'])
+                ->setPrepTime($jsonContent['prepTime'])
+                ->setPortion($jsonContent['portion'])
+                ->setPicture($jsonContent['picture']);
         } else {
             throw new \Exception('Données de requête manquantes ou invalides');
         }
@@ -133,43 +137,28 @@ class RecipeController extends AbstractController
      * 
      * @Route("/api/recipes", name="app_api_post_recipes_item", methods={"POST"})
      */
-    public function create(FoodRepository $foodRepository, Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, VirtueRepository $virtueRepository)
+    public function create(FoodRepository $foodRepository, Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, VirtueRepository $virtueRepository, UserRepository $userRepository)
     {
 
+        $user = $this->getUser();
         $jsonContent = $request->getContent();
-        $recipe = $serializer->deserialize($jsonContent, Recipe::class, "json", [
-            //'attributes_to_skip' => ['compositions','virtue', 'category']
-        ]);
-        // 1. Décoder les données de la requete -> mises dans un tableau associatif
+        $recipe = $serializer->deserialize($jsonContent, Recipe::class, "json", [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category', 'virtue', 'compositions'], AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,]);
+        $recipe->setUser($user);
+
         $decodedContent = json_decode($jsonContent, true);
 
-        var_dump($decodedContent);
+        // On set manuellement category et virtue à partir de leurs id
+        $recipe->setCategory($categoryRepository->find($decodedContent['category']))
+            ->setVirtue($virtueRepository->find($decodedContent['virtue']));
 
-        // On récupère les relations virtue et category par leurs id, puis on les set dans recipe.
-        $virtueId = $decodedContent['virtue'];
-        $categoryId = $decodedContent['category'];
-        
-        $category = $categoryRepository->find($categoryId);
-        $virtue = $virtueRepository->find($virtueId);
 
-        $recipe->setVirtue($virtue)->setCategory($category); 
-        
-         $compositions = $decodedContent['compositions']; 
-
-         foreach ($compositions as $composition) {
-            // 2. Recuperer food pour chaque composition à partir de son id
-            $foodId = $composition['foods'];
-            $food = $foodRepository->find($foodId);
-
-            // 3. Creer des instances de compositions pour chaques entrées du tableau de composition (et ajouter food recuper avec setFood())
-            $newComposition = new Composition();
-            $newComposition->setFood($food)->setQuantity($composition['quantity'])->setUnity($composition['unity']);
-
-            // 4. Ajouter chaque composition à partir de recipe avec addComposition()
-            $recipe->addComposition($newComposition);
+        // On crée chaque composition et on l'ajoute à recipe
+        foreach ($decodedContent['compositions'] as $compositionData) {
+            $composition = new Composition();
+            $composition->setFood($foodRepository->find($compositionData['food']))
+                ->setUnity($compositionData['unity'])->setQuantity($compositionData['quantity']);
+            $recipe->addComposition($composition);
         }
- 
-
 
         $errors = $validator->validate($recipe);
 
@@ -186,6 +175,7 @@ class RecipeController extends AbstractController
         /* var_dump($recipe); */
 
         // 5. persist et flush
+
         $entityManager->persist($recipe);
         $entityManager->flush();
 

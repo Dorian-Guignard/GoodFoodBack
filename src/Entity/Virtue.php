@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints;
 
 /**
  * @ORM\Entity(repositoryClass=VirtueRepository::class)
- * @UniqueEntity("name")
  */
 class Virtue
 {

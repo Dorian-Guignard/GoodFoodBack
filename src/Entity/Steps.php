@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use App\Repository\StepsRepository;
 use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
@@ -15,7 +16,6 @@ use Symfony\Component\Validator\Constraints;
 
 /**
  * @ORM\Entity(repositoryClass=StepsRepository::class)
- * @UniqueEntity("name")
  */
 class Steps
 {
@@ -44,13 +44,13 @@ class Steps
     /**
      * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="steps")
      * @ORM\JoinColumn(nullable=false)
-     * @Ignore
+     * @Ignore()
      */
     private $recipe;
 
     public function __toString()
     {
-        return ''.$this->getName();
+        return '' . $this->getName();
     }
 
     public function getId(): ?int

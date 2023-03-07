@@ -26,14 +26,14 @@ class Composition
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="compositions")
+     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="compositions", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Ignore
      */
     private $recipe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions")
+     * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions", cascade={"persist"})
      * @Groups({"compositions_get_collection", "compositions_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $food;
