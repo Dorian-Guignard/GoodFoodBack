@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @Route("/recipe")
@@ -38,7 +39,7 @@ class RecipeController extends AbstractController
         $form->handleRequest($request);
         //var_dump($form->get('nameImage')->getData());
         if ($form->isSubmitted() && $form->isValid()) {
-            $recipeRepository->add($recipe, true);
+
 
             /** @var UploadedFile $imageFile */
             $imageFile = $form->get('nameImage')->getData();
@@ -65,17 +66,20 @@ class RecipeController extends AbstractController
 
                 // updates the 'nameImage' property to store the image file name
                 // instead of its contents
-                $recipe->setNameImage($newFilename);
-                var_dump($newFilename);
-            }
+                $recipe->setNameImage(
+                    $this->getParameter('new_item_directory') . '/' . $newFilename
+                );
 
+                //var_dump($newFilename);
+            }
+            $recipeRepository->add($recipe, true);
             return $this->redirectToRoute('app_recipe_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('recipe/new.html.twig', [
             'recipe' => $recipe,
             'form' => $form,
-            
+
         ]);
     }
 
