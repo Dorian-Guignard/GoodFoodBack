@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserController extends AbstractController
 {
@@ -173,5 +174,40 @@ public function create(Request $request, SerializerInterface $serializer, Valida
         $entityManager->flush();
 
         return $this->json(['message' => 'user supprimée.'], Response::HTTP_OK);
+    }
+
+    private $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
+    /**
+     *@Route("/api/usersconnect", name="app_api__usersconnect_item", methods={"GET"}) 
+     */
+    public function getCurrentUser()
+    {
+        $token = $this->tokenStorage->getToken();
+
+        if (!$token) {
+            return $this->json(['message' => 'token non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $user = $token->getUser();
+
+        if (!$user instanceof User) {
+            return $this->json(['message' => 'user non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json(
+            ['user' => $user],
+
+            Response::HTTP_OK,
+
+            [],
+
+            ['groups' => 'users_get_item']
+    );
     }
 }
