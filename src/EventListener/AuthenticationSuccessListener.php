@@ -1,23 +1,23 @@
 <?php
 
-namespace App\EventListener;
+/* namespace App\EventListener;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\SerializerInterface; */
 
-class AuthenticationSuccessListener
-{
-    private SerializerInterface $serializer;
+/* class AuthenticationSuccessListener
+{ */
+    /* private SerializerInterface $serializer; */
 
-    public function __construct(SerializerInterface $serializer)
+    /* public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
-    }
+    } */
     /**
-     * @param AuthenticationSuccessEvent $event
-     */
-    public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event)
+     * /* @param AuthenticationSuccessEvent $event */
+     
+    /* public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event)
     {
         $data = $event->getData();
         $user = $event->getUser();
@@ -30,4 +30,4 @@ class AuthenticationSuccessListener
 
         $event->setData($data);
     }
-}
+} */

@@ -20,7 +20,7 @@
             <tr>
                 <td>{{ food.id }}</td>
                 <td>{{ food.name }}</td>
-                <td>{{ food.nameImage }}</td>
+                <td> <img  src="{{ asset('' ~ food.nameImage ~ '') }}"</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_food_show', {'id': food.id}) }}">show</a>
                     <a class="btn btn-warning" href="{{ path('app_food_edit', {'id': food.id}) }}">edit</a>

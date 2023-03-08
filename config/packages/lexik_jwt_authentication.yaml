@@ -4,14 +4,14 @@ lexik_jwt_authentication:
     pass_phrase: '%env(JWT_PASSPHRASE)%'
     user_identity_field: email
     token_ttl: 21600
-
-    token_extractors:
-        cookie:
-            enabled: true
-            name: BEARER
+ #code pour l'utilisation de cookie à utiliser lors de la v2
+    #token_extractors:
+        #cookie:
+            #enabled: true
+            #name: BEARER
     
-    set_cookies:
-        BEARER:
-            secure: false
-            samesite: lax
+    #set_cookies:
+        #BEARER:
+            #secure: false
+           # samesite: lax
 

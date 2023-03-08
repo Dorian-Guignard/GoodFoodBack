@@ -21,7 +21,7 @@
             <tr>
                 <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
-                <td>{{ category.nameImage }}</td>
+                <td> <img  src="{{ asset('' ~ category.nameImage ~ '') }}"</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
                     <a class="btn btn-warning" href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
