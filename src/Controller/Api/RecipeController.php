@@ -106,7 +106,7 @@ class RecipeController extends AbstractController
 
         $jsonContent = json_decode($request->getContent(), true);
 
-        if (isset($jsonContent['name'], $jsonContent['description'], $jsonContent['duration'], $jsonContent['heatTime'], $jsonContent['prepTime'], $jsonContent['portion'])) {
+        if (isset($jsonContent['name'], $jsonContent['description'], $jsonContent['duration'], $jsonContent['heatTime'], $jsonContent['prepTime'], $jsonContent['portion'], $jsonContent['nameImage'])) {
             $patchRecipe = $Recipe
                 ->setName($jsonContent['name'])
                 ->setDescription($jsonContent['description'])
@@ -114,7 +114,8 @@ class RecipeController extends AbstractController
                 ->setHeatTime($jsonContent['heatTime'])
                 ->setPrepTime($jsonContent['prepTime'])
                 ->setPortion($jsonContent['portion'])
-                ->setPicture($jsonContent['picture']);
+                ->setPicture($jsonContent['picture'])
+                ->setNameImage($jsonContent['nameImage']);
         } else {
             throw new \Exception('Données de requête manquantes ou invalides');
         }
@@ -141,12 +142,15 @@ class RecipeController extends AbstractController
      * @Route("/api/recipes", name="app_api_post_recipes_item", methods={"POST"})
      */
     public function create(
+        FoodRepository $foodRepository,
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         EntityManagerInterface $entityManager,
-        SluggerInterface $slugger,
-        ManagerRegistry $doctrine
+        CategoryRepository $categoryRepository,
+        VirtueRepository $virtueRepository,
+        UserRepository $userRepository,
+        SluggerInterface $slugger
     ) {
         $user = $this->getUser();
 
@@ -161,21 +165,27 @@ class RecipeController extends AbstractController
         );
 
 
+        $user = $this->getUser();
+        $jsonContent = $request->getContent();
+        $recipe = $serializer->deserialize($jsonContent, Recipe::class, "json", [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category', 'virtue', 'compositions'], AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,]);
         $recipe->setUser($user);
 
         $decodedContent = json_decode($jsonContent, true);
 
         // On set manuellement category et virtue à partir de leurs id
-        $recipe->setCategory($doctrine->getRepository(Category::class)->find($decodedContent['category']))
-            ->setVirtue($doctrine->getRepository(Virtue::class)->find($decodedContent['virtue']));
+        $recipe->setCategory($categoryRepository->find($decodedContent['category']))
+            ->setVirtue($virtueRepository->find($decodedContent['virtue']));
+
 
         // On crée chaque composition et on l'ajoute à recipe
         foreach ($decodedContent['compositions'] as $compositionData) {
             $composition = new Composition();
-            $composition->setFood($doctrine->getRepository(Food::class)->find($compositionData['food']))
-                ->setUnity($compositionData['unity'])->setQuantity($compositionData['quantité']);
+            $composition->setFood($foodRepository->find($compositionData['food']))
+                ->setUnity($compositionData['unity'])->setQuantity($compositionData['quantity']);
             $recipe->addComposition($composition);
         }
+        $recipe->addComposition($composition);
+
 
         // Gestion de l'image
         $imageFile = $request->files->get('nameImage');
@@ -199,7 +209,7 @@ class RecipeController extends AbstractController
             // updates the 'nameImage' property to store the image file name
             // instead of its contents
             $recipe->setNameImage(
-                $this->getParameter('new_item_directory') . '/' . $newFilename
+                'images/new_item/' . $newFilename
             );
         }
 

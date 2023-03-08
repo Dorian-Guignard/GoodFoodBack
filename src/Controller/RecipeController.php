@@ -67,7 +67,7 @@ class RecipeController extends AbstractController
                 // updates the 'nameImage' property to store the image file name
                 // instead of its contents
                 $recipe->setNameImage(
-                    $this->getParameter('new_item_directory') . '/' . $newFilename
+                    'images/new_item/' . $newFilename
                 );
 
                 //var_dump($newFilename);
@@ -101,7 +101,7 @@ class RecipeController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_recipe_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Recipe $recipe, RecipeRepository $recipeRepository): Response
+    public function edit(Request $request, Recipe $recipe, RecipeRepository $recipeRepository, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
@@ -109,6 +109,38 @@ class RecipeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $recipeRepository->add($recipe, true);
 
+                        /**  @var UploadedFile $imageFile */
+                        $imageFile = $form->get('nameImage')->getData();
+
+                        // this condition is needed because the 'image' field is not required
+                        // so the image file must be processed only when a file is uploaded
+                        if ($imageFile) {
+                            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                            // this is needed to safely include the file name as part of the URL
+                            $safeFilename = $slugger->slug($originalFilename);
+                            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+            
+                            // Move the file to the directory where images are stored
+                            try {
+                                $imageFile->move(
+                                    $this->getParameter('new_item_directory'),
+                                    $newFilename
+                                );
+                            } catch (FileException $e) {
+                                // ... handle exception if something happens during file upload
+                                $this->addFlash('error', 'votre telechargement a échoué');
+                                return $this->redirectToRoute('app_recipe_edit');
+                            }
+            
+                            // updates the 'nameImage' property to store the image file name
+                            // instead of its contents
+                            $recipe->setNameImage(
+                                'images/new_item/' . $newFilename
+                            );
+
+            
+                        }
+                        $recipeRepository->add($recipe, true);
             return $this->redirectToRoute('app_recipe_index', [], Response::HTTP_SEE_OTHER);
         }
 
