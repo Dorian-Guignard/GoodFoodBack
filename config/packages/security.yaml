@@ -84,7 +84,8 @@ security:
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
     - { path: ^/api/recipes, roles: ROLE_USER, methods: POST }
     - { path: ^/api/recipes/\d+, roles: ROLE_USER, methods: PATCH }
-    # - { path: ^/user/(profile|edit), roles: ROLE_USER }
+    - { path: ^/api/users, roles: ROLE_USER, methods: POST }
+    - { path: ^/api/users/\d+, roles: ROLE_USER, methods: PATCH }
 when@test:
   security:
     password_hashers:

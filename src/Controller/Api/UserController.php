@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api;
 
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,14 +9,17 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Validator\Constraints\Json;
 
 class UserController extends AbstractController
 {
@@ -94,7 +96,7 @@ class UserController extends AbstractController
             ->setPassword($jsonContent['password'])
             ->setEmail($jsonContent['email'])
             ->setRoles($jsonContent['roles'])
-            ->setAvatar($jsonContent['avatar'])
+            ->setNameImage($jsonContent['nameImage'])
             ->setNameUser($jsonContent['nameUser']);
 
 
@@ -122,13 +124,37 @@ class UserController extends AbstractController
      * 
      * @Route("/api/users", name="app_api_post_users_item", methods={"POST"})
      */
-    public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
+    public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger)
     {
 
         $jsonContent = $request->getContent();
 
         $user = $serializer->deserialize($jsonContent, User::class, "json");
+            // Gestion de l'image
+        $imageFile = $request->files->get('nameImage');
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // this is needed to safely include the file name as part of the URL
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
+            // Move the file to the directory where images are stored
+            try {
+                $imageFile->move(
+                    $this->getParameter('userPic_directory'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+                return $this->json(['error' => 'votre telechargement a échoué'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            // updates the 'nameImage' property to store the image file name
+            // instead of its contents
+            $user->setNameImage(
+                'images/userPic/' . $newFilename
+            );
+        }
         // Hash the password
         $plainPassword = $user->getPassword();
 

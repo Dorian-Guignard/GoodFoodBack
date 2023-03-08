@@ -53,7 +53,7 @@ class Virtue
      * @Groups({"virtues_get_collection", "virtues_get_item"})
      * 
      */
-    private $picture;
+    private $nameImage;
 
     public function __construct()
     {
@@ -89,14 +89,14 @@ class Virtue
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getNameImage(): ?string
     {
-        return $this->picture;
+        return $this->nameImage;
     }
 
-    public function setPicture(?string $picture): self
+    public function setNameImage(?string $nameImage): self
     {
-        $this->picture = $picture;
+        $this->nameImage = $nameImage;
 
         return $this;
     }

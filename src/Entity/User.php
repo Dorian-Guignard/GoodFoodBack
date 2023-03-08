@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"users_get_collection", "users_get_item"})
      */
-    private $avatar;
+    private $nameImage;
 
     /**
      * @ORM\OneToMany(targetEntity=Recipe::class, mappedBy="user")
@@ -166,14 +166,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    public function getAvatar(): ?string
+    public function getNameImage(): ?string
     {
-        return $this->avatar;
+        return $this->nameImage;
     }
 
-    public function setAvatar(?string $avatar): self
+    public function setNameImage(?string $nameImage): self
     {
-        $this->avatar = $avatar;
+        $this->nameImage = $nameImage;
 
         return $this;
     }

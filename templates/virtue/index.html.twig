@@ -10,9 +10,9 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>Description</th>
-                <th>Picture</th>
+                <th>Image</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,7 +22,7 @@
                 <td>{{ virtue.id }}</td>
                 <td>{{ virtue.name }}</td>
                 <td>{{ virtue.description }}</td>
-                <td>{{ virtue.picture }}</td>
+                <td>{{ virtue.nameImage }}</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_virtue_show', {'id': virtue.id}) }}">show</a>
                     <a class="btn btn-warning" href="{{ path('app_virtue_edit', {'id': virtue.id}) }}">edit</a>

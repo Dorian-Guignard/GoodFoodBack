@@ -34,7 +34,7 @@ class Food
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"foods_get_collection", "foods_get_item", "recipes_get_collection", "recipes_get_item"})
      */
-    private $picture;
+    private $nameImage;
 
     /**
      * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="food")
@@ -70,14 +70,14 @@ class Food
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getNameImage(): ?string
     {
-        return $this->picture;
+        return $this->nameImage;
     }
 
-    public function setPicture(?string $picture): self
+    public function setNameImage(?string $nameImage): self
     {
-        $this->picture = $picture;
+        $this->nameImage = $nameImage;
 
         return $this;
     }

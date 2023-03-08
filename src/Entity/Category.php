@@ -35,7 +35,7 @@ class Category
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"categories_get_collection", "categories_get_item"})
      */
-    private $picture;
+    private $nameImage;
 
     /**
      * @ORM\OneToMany(targetEntity=Recipe::class, mappedBy="category")
@@ -67,14 +67,14 @@ class Category
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getNameImage(): ?string
     {
-        return $this->picture;
+        return $this->nameImage;
     }
 
-    public function setPicture(?string $picture): self
+    public function setNameImage(?string $nameImage): self
     {
-        $this->picture = $picture;
+        $this->nameImage = $nameImage;
 
         return $this;
     }

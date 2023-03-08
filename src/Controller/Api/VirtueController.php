@@ -11,9 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 
 class VirtueController extends AbstractController
@@ -81,7 +83,7 @@ class VirtueController extends AbstractController
         $patchVirtue = $virtue
             ->setName($jsonContent['name'])
             ->setDescription($jsonContent['description'])
-            ->setPicture($jsonContent['picture']);
+            ->setNameImage($jsonContent['nameImage']);
 
 
         $entityManager->persist($patchVirtue);
@@ -105,13 +107,39 @@ class VirtueController extends AbstractController
      * 
      * @Route("/api/virtues", name="app_api_post_virtues_item", methods={"POST"})
      */
-    public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager)
+    public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, SluggerInterface $slugger)
     {
 
         $jsonContent = $request->getContent();
 
 
         $virtue = $serializer->deserialize($jsonContent, Virtue::class, "json");
+        
+            // Gestion de l'image
+        $imageFile = $request->files->get('nameImage');
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // this is needed to safely include the file name as part of the URL
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+            // Move the file to the directory where images are stored
+            try {
+                $imageFile->move(
+                    $this->getParameter('virtuePic_directory'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+                return $this->json(['error' => 'votre telechargement a échoué'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            // updates the 'nameImage' property to store the image file name
+            // instead of its contents
+            $virtue->setNameImage(
+                'images/virtuePic/' . $newFilename
+            );
+        }
 
         $errors = $validator->validate($virtue);
 
