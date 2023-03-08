@@ -2,4 +2,16 @@ lexik_jwt_authentication:
     secret_key: '%kernel.project_dir%/config/jwt/private.pem'
     public_key: '%kernel.project_dir%/config/jwt/public.pem'
     pass_phrase: '%env(JWT_PASSPHRASE)%'
+    user_identity_field: email
+    token_ttl: 21600
+
+    token_extractors:
+        cookie:
+            enabled: true
+            name: BEARER
+    
+    set_cookies:
+        BEARER:
+            secure: false
+            samesite: lax
 
