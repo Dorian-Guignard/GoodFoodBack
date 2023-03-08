@@ -33,7 +33,7 @@
                 <td>{{ recipe.heatTime }}</td>
                 <td>{{ recipe.prepTime }}</td>
                 <td>{{ recipe.portion }}</td>
-                <td>{{ recipe.nameImage }}</td>
+                <td> <img  src="{{ asset('' ~ recipe.nameImage ~ '') }}"</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_recipe_show', {'id': recipe.id}) }}">show</a>
                     <a class="btn btn-warning" href="{{ path('app_recipe_edit', {'id': recipe.id}) }}">edit</a>
