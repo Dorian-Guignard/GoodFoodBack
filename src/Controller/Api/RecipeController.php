@@ -114,7 +114,6 @@ class RecipeController extends AbstractController
                 ->setHeatTime($jsonContent['heatTime'])
                 ->setPrepTime($jsonContent['prepTime'])
                 ->setPortion($jsonContent['portion'])
-                ->setPicture($jsonContent['picture'])
                 ->setNameImage($jsonContent['nameImage']);
         } else {
             throw new \Exception('Données de requête manquantes ou invalides');
@@ -198,7 +197,7 @@ class RecipeController extends AbstractController
             // Move the file to the directory where images are stored
             try {
                 $imageFile->move(
-                    $this->getParameter('new_item_directory'),
+                    $this->getParameter('recipePic_directory'),
                     $newFilename
                 );
             } catch (FileException $e) {
@@ -209,7 +208,7 @@ class RecipeController extends AbstractController
             // updates the 'nameImage' property to store the image file name
             // instead of its contents
             $recipe->setNameImage(
-                'images/new_item/' . $newFilename
+                'images/recipePic/' . $newFilename
             );
         }
 

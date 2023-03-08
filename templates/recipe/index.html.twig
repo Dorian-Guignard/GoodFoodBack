@@ -33,7 +33,6 @@
                 <td>{{ recipe.heatTime }}</td>
                 <td>{{ recipe.prepTime }}</td>
                 <td>{{ recipe.portion }}</td>
-                <td><img src="{{ asset('' ~ recipe.picture ~ '') }}"  ></td>
                 <td>{{ recipe.nameImage }}</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_recipe_show', {'id': recipe.id}) }}">show</a>
@@ -45,9 +44,8 @@
                 <td colspan="10">no records found</td>
             </tr>
             
-            <img src="{{ asset('' ~ recipe.nameImage ~ '') }}"  >
-                <td>{{ recipe.picture }}</td>
-                <td>{{ recipe.nameImage }}</td>
+         
+
         {% endfor %}
         </tbody>
     </table>

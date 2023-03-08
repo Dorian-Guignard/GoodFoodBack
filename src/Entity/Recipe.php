@@ -75,11 +75,6 @@ class Recipe
      */
     private $portion;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"recipes_get_collection", "recipes_get_item"})
-     */
-    private $picture;
 
     /**
      * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="recipe", orphanRemoval=true, cascade={"persist", "remove"})
@@ -209,18 +204,6 @@ class Recipe
         return $this;
     }
 
-
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(?string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
 
     public function getVirtue(): ?Virtue
     {
