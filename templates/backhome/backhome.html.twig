@@ -4,6 +4,18 @@
 
 {% block body %}
 
+<div class="col-sm-6">
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Test</h5>
+      <p class="card-text">Test upload d'images</p>
+    <a class="btn btn-success" href="{{ path('app_test_new') }}" class="card-link">Create new</a>
+    <a class="btn btn-warning" href="{{ path('app_test_index') }}"  class="card-link">Index </a>
+  </div>
+</div>
+</div>
+</div>
+
 
 <div class="col-sm-6">
 <div class="card">
@@ -70,8 +82,8 @@
     <div class="card-body">
       <h5 class="card-title">Utilisateurs</h5>
         <p class="card-text"> Création et moddification des utilisateurs</p>
-     <a class="btn btn-success" href="#" class="card-link">Create new </a>
-   <a class="btn btn-warning" href="#"  class="card-link">Index </a>
+     <a class="btn btn-success" href="{{ path('app_user_index') }}"  class="card-link">Create new </a>
+   <a class="btn btn-warning" href="{{ path('app_user_index') }}"  class="card-link">Index </a>
     </div>
   </div>
 </div>
