@@ -100,9 +100,6 @@ class UserController extends AbstractController
             ->setNameUser($jsonContent['nameUser']);
 
 
-
-
-
         $entityManager->persist($patchUser);
 
         $entityManager->flush();
