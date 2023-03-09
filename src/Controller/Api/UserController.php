@@ -126,12 +126,11 @@ class UserController extends AbstractController
      */
     public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger)
     {
+        
+        $data = $request->request->all();
+        $imageFile = $request->files->get('imageFile');
+        $user = $serializer->deserialize(json_encode($data), User::class, "json");
 
-        $jsonContent = $request->getContent();
-
-        $user = $serializer->deserialize($jsonContent, User::class, "json");
-            // Gestion de l'image
-        $imageFile = $request->files->get('nameImage');
         if ($imageFile) {
             $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
             // this is needed to safely include the file name as part of the URL

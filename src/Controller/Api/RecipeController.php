@@ -253,7 +253,7 @@ class RecipeController extends AbstractController
         }
         $entityManager->flush();
 
-        return $this->json(['message' => 'Recette supprimée.'], Response::HTTP_OK);
+        return $this->json(['message' => 'image ajouté avec succés.'], Response::HTTP_OK);
     }
 
 
