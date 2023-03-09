@@ -186,31 +186,6 @@ class RecipeController extends AbstractController
         $recipe->addComposition($composition);
 
 
-        // Gestion de l'image
-        $imageFile = $request->files->get('nameImage');
-        if ($imageFile) {
-            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-            // this is needed to safely include the file name as part of the URL
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-
-            // Move the file to the directory where images are stored
-            try {
-                $imageFile->move(
-                    $this->getParameter('recipePic_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // ... handle exception if something happens during file upload
-                return $this->json(['error' => 'votre telechargement a échoué'], Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
-
-            // updates the 'nameImage' property to store the image file name
-            // instead of its contents
-            $recipe->setNameImage(
-                'images/recipePic/' . $newFilename
-            );
-        }
 
         $errors = $validator->validate($recipe);
 
@@ -237,6 +212,48 @@ class RecipeController extends AbstractController
             ],
             ['groups' => 'recipes_get_item']
         );
+    }
+
+     /**
+     * Add image to recipe
+     * 
+     * @Route("/api/recipes/{id<\d+>}/add-image", name="app_api_add_image_to_recipe", methods={"POST"})
+     */
+    public function addImageToRecipe(Request $request, Recipe $recipe = null, EntityManagerInterface $entityManager, SluggerInterface $slugger)
+    {
+        if ($recipe === null) {
+            return $this->json(['message' => 'Recette non trouvée.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $imageFile = $request->files->get('imageFile');
+        if(!$imageFile) return $this->json(['message' => 'Image manquante'], Response::HTTP_BAD_REQUEST);
+
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // this is needed to safely include the file name as part of the URL
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+            // Move the file to the directory where images are stored
+            try {
+                $imageFile->move(
+                    $this->getParameter('recipePic_directory'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+                return $this->json(['error' => 'votre telechargement a échoué'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            // updates the 'nameImage' property to store the image file name
+            // instead of its contents
+            $recipe->setNameImage(
+                'images/recipePic/' . $newFilename
+            );
+        }
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Recette supprimée.'], Response::HTTP_OK);
     }
 
 
