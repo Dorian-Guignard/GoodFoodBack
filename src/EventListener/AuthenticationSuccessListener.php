@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface; */
         $this->serializer = $serializer;
     } */
     /**
-     * /* @param AuthenticationSuccessEvent $event */
+     * /* $event */
      
     /* public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event)
     {
