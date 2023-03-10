@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="backshow">
-    <h1>Virtue index</h1>
+    <h1>Index des vertus</h1>
 
     <table class="table">
         <thead>
@@ -22,10 +22,10 @@
                 <td>{{ virtue.id }}</td>
                 <td>{{ virtue.name }}</td>
                 <td>{{ virtue.description }}</td>
-                <td> <img  src="{{ asset('' ~ virtue.nameImage ~ '') }}"</td>
+                <td> <img class="virtuePic"  src="{{ asset('' ~ virtue.nameImage ~ '') }}"</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ path('app_virtue_show', {'id': virtue.id}) }}">show</a>
-                    <a class="btn btn-warning" href="{{ path('app_virtue_edit', {'id': virtue.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_virtue_show', {'id': virtue.id}) }}">Détail</a>
+                    <a class="btn btn-warning" href="{{ path('app_virtue_edit', {'id': virtue.id}) }}">Edition</a>
                 </td>
             </tr>
         {% else %}
@@ -36,6 +36,6 @@
         </tbody>
     </table>
 
-<a class="btn btn-success" href="{{ path('app_virtue_new') }}">Create new</a>
+<a class="btn btn-success" href="{{ path('app_virtue_new') }}">Ajouter</a>
 </div>
 {% endblock %}

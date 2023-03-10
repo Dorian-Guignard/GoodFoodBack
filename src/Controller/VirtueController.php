@@ -89,7 +89,7 @@ class VirtueController extends AbstractController
     {
 
         if ($virtue === null) {
-            throw $this->createNotFoundException("Cette vertue n'existe pas");
+            throw $this->createNotFoundException("Cette vertu n'existe pas");
         }
         return $this->render('virtue/show.html.twig', [
             'virtue' => $virtue,

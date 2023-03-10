@@ -49,7 +49,7 @@ class VirtueController extends AbstractController
 
         if ($virtue === null) {
 
-            return $this->json(['message' => 'Vertue non trouvée.'], Response::HTTP_NOT_FOUND);
+            return $this->json(['message' => 'Vertu non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
         return $this->json(

@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Food index{% endblock %}
+{% block title %}Liste des Ingrédients{% endblock %}
 
 {% block body %}
 <div class="backshow">
-    <h1>Food index</h1>
+    <h1>Liste des Ingrédients</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
-                <th>Picture</th>
-                <th>actions</th>
+                <th>Noms</th>
+                <th>Images</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,10 +20,10 @@
             <tr>
                 <td>{{ food.id }}</td>
                 <td>{{ food.name }}</td>
-                <td> <img  src="{{ asset('' ~ food.nameImage ~ '') }}"</td>
+                <td> <img class="foodPic"  src="{{ asset('' ~ food.nameImage ~ '') }}"</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ path('app_food_show', {'id': food.id}) }}">show</a>
-                    <a class="btn btn-warning" href="{{ path('app_food_edit', {'id': food.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_food_show', {'id': food.id}) }}">Détail</a>
+                    <a class="btn btn-warning" href="{{ path('app_food_edit', {'id': food.id}) }}">Edition</a>
                 </td>
             </tr>
         {% else %}
@@ -34,6 +34,6 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success" href="{{ path('app_food_new') }}">Create new</a>
+    <a class="btn btn-success" href="{{ path('app_food_new') }}">Ajouter</a>
 </div>
 {% endblock %}

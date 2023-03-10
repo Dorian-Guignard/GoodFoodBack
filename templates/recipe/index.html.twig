@@ -4,22 +4,21 @@
 
 {% block body %}
 <div class="backshow">
-    <h1>Recipe index</h1>
- <a class="btn btn-success" href="{{ path('app_recipe_new') }}">Create new</a>
+    <h1>Liste des recettes</h1>
+ <a class="btn btn-success" href="http://localhost:3000/recipe/add">Ajout des recettes</a>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>Description</th>
-                <th>Duration</th>
-                <th>HeatTime</th>
-                <th>PrepTime</th>
-                <th>Portion</th>
-                <th>Picture</th>
-                <th>nameImage</th>
-                <th>actions</th>
+                <th>Durée totale de préparation</th>
+                <th>Temps de cuisson</th>
+                <th>Temps de préparation</th>
+                <th>Portion</th>              
+                <th>Image</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -33,10 +32,10 @@
                 <td>{{ recipe.heatTime }}</td>
                 <td>{{ recipe.prepTime }}</td>
                 <td>{{ recipe.portion }}</td>
-                <td> <img  src="{{ asset('' ~ recipe.nameImage ~ '') }}"</td>
+                <td> <img class="recipePic" src="{{ asset('' ~ recipe.nameImage ~ '') }}"</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ path('app_recipe_show', {'id': recipe.id}) }}">show</a>
-                    <a class="btn btn-warning" href="{{ path('app_recipe_edit', {'id': recipe.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_recipe_show', {'id': recipe.id}) }}">Détail</a>
+                   <a class="btn btn-warning" href="#">Edition</a>
                 </td>
             </tr>
         {% else %}

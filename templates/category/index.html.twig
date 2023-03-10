@@ -5,14 +5,14 @@
 
 {% block body %}
 <div class="backshow">
-    <h1>Category index</h1>
+    <h1>Liste des catégories</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
-                <th>Picture</th>
+                <th>Noms</th>
+                <th>Images</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,10 +21,10 @@
             <tr>
                 <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
-                <td> <img  src="{{ asset('' ~ category.nameImage ~ '') }}"</td>
+                <td> <img class="categoryPic"  src="{{ asset('' ~ category.nameImage ~ '') }}"</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                    <a class="btn btn-warning" href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_category_show', {'id': category.id}) }}">Détail</a>
+                    <a class="btn btn-warning" href="{{ path('app_category_edit', {'id': category.id}) }}">Edition</a>
                 </td>
             </tr>
         {% else %}
@@ -35,6 +35,6 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success" href="{{ path('app_category_new') }}">Create new</a>
+    <a class="btn btn-success" href="{{ path('app_category_new') }}">Ajouter</a>
 </div>
 {% endblock %}
