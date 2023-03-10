@@ -6,6 +6,10 @@ use App\Repository\FoodRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=FoodRepository::class)
@@ -16,23 +20,32 @@ class Food
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"foods_get_collection", "foods_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"foods_get_collection", "foods_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"foods_get_collection", "foods_get_item", "recipes_get_collection", "recipes_get_item"})
      */
-    private $picture;
+    private $nameImage;
 
     /**
      * @ORM\OneToMany(targetEntity=Composition::class, mappedBy="food")
+     * @Ignore()
      */
     private $compositions;
+
+        public function __toString()
+    {
+        return ''.$this->getName();
+    }
 
     public function __construct()
     {
@@ -57,20 +70,20 @@ class Food
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getNameImage(): ?string
     {
-        return $this->picture;
+        return $this->nameImage;
     }
 
-    public function setPicture(?string $picture): self
+    public function setNameImage(?string $nameImage): self
     {
-        $this->picture = $picture;
+        $this->nameImage = $nameImage;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Composition>
+     * @return Collection
      */
     public function getCompositions(): Collection
     {

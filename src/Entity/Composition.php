@@ -2,11 +2,18 @@
 
 namespace App\Entity;
 
+use App\Repository\RecipeRepository;
+use App\Entity\Recipe;
 use App\Repository\CompositionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CompositionRepository::class)
+ * 
  */
 class Composition
 {
@@ -14,29 +21,40 @@ class Composition
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"compositions_get_collection", "compositions_get_item"})
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="compositions")
+     * @ORM\ManyToOne(targetEntity=Recipe::class, inversedBy="compositions", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Ignore
      */
     private $recipe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions")
+     * @ORM\ManyToOne(targetEntity=Food::class, inversedBy="compositions", cascade={"persist"})
+     * @Groups({"compositions_get_collection", "compositions_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $food;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"compositions_get_collection", "compositions_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $unity;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string",nullable=true)
+     * @Groups({"compositions_get_collection", "compositions_get_item", "recipes_get_collection", "recipes_get_item"})
      */
     private $quantity;
+
+    public function __toString()
+    {
+        return '' . $this->getFood();
+    }
+
 
     public function getId(): ?int
     {
@@ -79,12 +97,12 @@ class Composition
         return $this;
     }
 
-    public function getQuantity(): ?int
+    public function getQuantity(): ?string
     {
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): self
+    public function setQuantity(string $quantity): self
     {
         $this->quantity = $quantity;
 

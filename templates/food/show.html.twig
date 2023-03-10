@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Food{% endblock %}
+
+{% block body %}
+<div class = "backshow">
+    <h1>Food</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ food.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ food.name }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ food.nameImage }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-info" href="{{ path('app_food_index') }}">Retour à l'index</a>
+
+    <a class="btn btn-warning " href="{{ path('app_food_edit', {'id': food.id}) }}">Edition</a>
+
+    {{ include('food/_delete_form.html.twig') }}
+</div>
+{% endblock %}

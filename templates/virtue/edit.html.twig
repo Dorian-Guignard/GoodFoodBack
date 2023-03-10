@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Virtue{% endblock %}
+
+{% block body %}
+    <h1>Modification de la vertu</h1>
+
+    {{ include('virtue/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-info" href="{{ path('app_virtue_index') }}">Retour à l'index</a>
+
+    {{ include('virtue/_delete_form.html.twig') }}
+{% endblock %}

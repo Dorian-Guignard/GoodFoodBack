@@ -6,6 +6,11 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -16,21 +21,25 @@ class Category
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"categories_get_collection", "categories_get_item"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"categories_get_collection", "categories_get_item", "recipes_get_collection"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"categories_get_collection", "categories_get_item"})
      */
-    private $picture;
+    private $nameImage;
 
     /**
      * @ORM\OneToMany(targetEntity=Recipe::class, mappedBy="category")
+     * @Ignore()
      */
     private $recipes;
 
@@ -58,14 +67,14 @@ class Category
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getNameImage(): ?string
     {
-        return $this->picture;
+        return $this->nameImage;
     }
 
-    public function setPicture(?string $picture): self
+    public function setNameImage(?string $nameImage): self
     {
-        $this->picture = $picture;
+        $this->nameImage = $nameImage;
 
         return $this;
     }

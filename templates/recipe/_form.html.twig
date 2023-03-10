@@ -1,0 +1,10 @@
+
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data', 'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+   
+    <button class="btn btn-warning">{{ button_label|default('Save') }}</button>
+    
+{{ form_end(form) }}
+
+
+

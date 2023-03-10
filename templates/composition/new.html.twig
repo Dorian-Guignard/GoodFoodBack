@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Composition{% endblock %}
+
+{% block body %}
+<div class="backshow">
+    <h1>Ajouter Composition</h1>
+
+    {{ include('composition/_form.html.twig') }}
+
+    <a class="btn btn-info" href="{{ path('app_composition_index') }}">back to list</a>
+</div>
+{% endblock %}

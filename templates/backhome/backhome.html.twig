@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BackHomeController!{% endblock %}
+
+{% block body %}
+
+
+<div class="col-sm-6">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Recettes</h5>
+            <p class="card-text">Création et modification des recettes</p>
+            <a class="btn btn-success" href="{{ path('app_recipe_new') }}" class="card-link">Ajouter</a>
+            <a class="btn btn-warning" href="{{ path('app_recipe_index') }}" class="card-link">Index </a>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Ingrédients</h5>
+                <p class="card-text"> Création et modification des ingrédients</p>
+                <a class="btn btn-success" href="{{ path('app_food_new') }}" class="card-link">Ajouter </a>
+                <a class="btn btn-warning" href="{{ path('app_food_index') }}" class="card-link">Index </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Vertus</h5>
+                    <p class="card-text"> Création et modification des vertus</p>
+                    <a class="btn btn-success" href="{{ path('app_virtue_new') }}" class="card-link">Ajouter </a>
+                    <a class="btn btn-warning" href="{{ path('app_virtue_index') }}" class="card-link">Index </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Categories</h5>
+                    <p class="card-text">Création et modification des catégories</p>
+                    <a class="btn btn-success" href="{{ path('app_category_new') }}" class="card-link">Ajouter</a>
+                    <a class="btn btn-warning" href="{{ path('app_category_index') }}" class="card-link">Index </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Utilisateurs</h5>
+                    <p class="card-text"> Création et modification des utilisateurs</p>
+                    <a class="btn btn-success" href="{{ path('app_user_new') }}" class="card-link">Ajouter </a>
+                    <a class="btn btn-warning" href="{{ path('app_user_index') }}" class="card-link">Index </a>
+                </div>
+            </div>
+        </div>
+
+        {% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+<div class="backshow">
+    <h1>Index des utilisateurs</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Mot de passe</th>
+                <th>Pseudo</th>
+                <th>Avatar</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>{{ user.password }}</td>
+                <td>{{ user.nameUser}}</td>
+               <td> <img class="userPic"  src="{{ asset('' ~ user.nameImage ~ '') }}"</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_user_show', {'id': user.id}) }}">Détail</a>
+                    <a class="btn btn-warning" href="{{ path('app_user_edit', {'id': user.id}) }}">Edition</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('app_user_new') }}">Ajouter</a>
+</div>
+{% endblock %}

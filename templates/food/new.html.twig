@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Food{% endblock %}
+
+{% block body %}
+<div class="backshow">
+    <h1>Ajouter un nouvel ingrédient</h1>
+
+    {{ include('food/_form.html.twig') }}
+
+    <a class="btn btn-info" href="{{ path('app_food_index') }}">Retour à l'index</a>
+</div>
+{% endblock %}
