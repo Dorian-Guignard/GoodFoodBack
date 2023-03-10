@@ -116,6 +116,7 @@ class UserController extends AbstractController
         );
     }
 
+
     /**
      * Create user
      * 
@@ -123,7 +124,7 @@ class UserController extends AbstractController
      */
     public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger)
     {
-        
+
         $data = $request->request->all();
         $imageFile = $request->files->get('imageFile');
         $user = $serializer->deserialize(json_encode($data), User::class, "json");
@@ -192,6 +193,49 @@ class UserController extends AbstractController
             ['groups' => 'users_get_item']
         );
     }
+
+     /**
+     * update image to user
+     * 
+     * @Route("/api/users/{id<\d+>}/add-image", name="app_api_add_image_to_user", methods={"POST"})
+     */
+    public function addImageToUser(Request $request, User $user = null, EntityManagerInterface $entityManager, SluggerInterface $slugger)
+    {
+        if ($user === null) {
+            return $this->json(['message' => 'image non trouvée.'], Response::HTTP_NOT_FOUND);
+        }
+
+        $imageFile = $request->files->get('imageFile');
+        if(!$imageFile) return $this->json(['message' => 'Image manquante'], Response::HTTP_BAD_REQUEST);
+
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // this is needed to safely include the file name as part of the URL
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
+            // Move the file to the directory where images are stored
+            try {
+                $imageFile->move(
+                    $this->getParameter('userPic_directory'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+                return $this->json(['error' => 'votre telechargement a échoué'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            // updates the 'nameImage' property to store the image file name
+            // instead of its contents
+            $user->setNameImage(
+                'images/userPic/' . $newFilename
+            );
+        }
+        $entityManager->flush();
+
+        return $this->json(['message' => 'image ajouté avec succés.'], Response::HTTP_OK);
+    }
+
     /**
      * Delete user
      * 
@@ -209,7 +253,7 @@ class UserController extends AbstractController
         return $this->json(['message' => 'user supprimée.'], Response::HTTP_OK);
     }
 
-    
+
 
     /**
      *@Route("/api/usersconnect", name="app_api__usersconnect_item", methods={"GET"}) 
@@ -236,6 +280,6 @@ class UserController extends AbstractController
             [],
 
             ['groups' => 'users_get_item']
-    );
+        );
     }
 }
