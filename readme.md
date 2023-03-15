@@ -1,141 +1,48 @@
-#### GOODFOOD ####
+#### GOODFOOD
 
-Pour se connecter au back : php -S 0.0.0.0:8080 -t public
-ensuite aller sur http://0.0.0.0:8080/backhome
+### Presentation
 
+Bienvenue sur GoodFood, votre destination en ligne pour des recettes saines et délicieuses. Notre site propose une variété de recettes sélectionnées, chacune étant catégorisée en fonction des vertus qu'elle apporte.
+Que vous cherchiez à augmenter votre consommation de vitamines et de minéraux, à renforcer votre immunité ou à améliorer votre sommeil, notre site offre une large gamme de recettes pour vous aider à atteindre vos objectifs de santé et de bien-être.
+Notre mission est de vous aider à apprendre à manger tout en vous faisant plaisir. Nous croyons que la nourriture peut être à la fois saine et délicieuse, et nous travaillons dur pour proposer des recettes qui sont à la fois savoureuses et bénéfiques pour votre corps.
+Notre site web est également une ressource précieuse pour ceux qui cherchent à améliorer leurs connaissances en nutrition. Nous fournissons des informations détaillées sur les ingrédients et leurs bienfaits, afin que vous puissiez prendre des décisions éclairées en matière de nutrition.
+Rejoignez-nous sur Good Food pour découvrir une nouvelle façon de manger sainement et améliorer votre équilibre alimentaire tout en explorant de nouvelles saveurs et combinaisons.
 
-### LISTE DES ETAPES BACK ###
+### La Team
 
-# 1: FAIT #
+Ce projet est une application web developper par :
+-Dorian Guignard : Product Owner et Developpeur Back
+-Abdoul Tambadou : Referent Git et Developpeur Back
+-Steven Silva Texeira : Lead Dev Back
+-Gael Cantonnet : Lead Dev Front
+-Alexis Bizet : Scrum Master et Developpeur Front
 
-INSTALER SYMFONY ET SES COMPOSANTS
+### Les Technos utilisées
 
-composer create-project symfony/skeleton goodfood
-cd goodfood
-composer require webapp
-mv goodfood/* goodfood/.* .
-composer require symfony/security-bundle
+Language : PHP, HTML, JS, Twig
+Framework : Symphony, React,
+Library: Ant Design
 
+### Installation du projet GoodFood
 
-composer require twig
-composer require maker
-composer require annotations
-composer require symfony/asset
-composer require --dev symfony/profiler-pack
-composer require --dev symfony/debug-bundle
-composer require --dev symfony/var-dumper
-composer require symfony/orm-pack
-composer require symfony/form
-composer require symfony/validator
-composer require security-csrf
+## Repo Back
 
+    • git clone
+    • Lancer un serveur de dev : php -S 0.0.0.0:8080 -t public
+    • composer install
+    • Verifier votre fichier .env et adpaté votre url de connexion à votre BDD: DATABASE_URL="mysql://admin0:admin0@127.0.0.1:3306/goodfood?serverVersion=mariadb-10.3.25"
+    • Création de vos migrations : bin/console ma:mi
+    • Envoie de vos migrations : bin/console d:m:m
+    • creation de données sur la BDD avec SQL Command
 
-# 2: FAIT #
+## Repo Front
 
-CREATION DE LA BDD VIA ADMINER
+    • Installer les dépendances du projet avec le terminal : yarn
+    • Se déplacer dans le dossier goodfood : cd goodfood
+    • lancer le serveur front : yarn start
+    • le serveur tourne sur le localhost3000
 
-# 3: FAIT #
+## Sur le site web
 
-CONFIGURATION DU .env
-
-db name goodfood
-
-user admin
-
-password admin
-
-# 4: FAIT #
-
-CREATION DES ENTITY ET DES RELATIONS (! SAUF POUR LES TABLES USER ET ROLE QUI SERONT AJOUTEES PENDANT LA CONFIGURATION DE LA PARTIE SECURITE)
-
-student@teleporter:/var/www/html/apo/projet-12-recettes-healthy-back$ bin/console make:entity
-
- Class name of the entity to create or update (e.g. VictoriousPizza):
- > Recipe
- Your entity already exists! So let's add some new fields!
-
- New property name (press <return> to stop adding fields):
- > category
-
- Field type (enter ? to see all types) [string]:
- > relation
- What class should this entity be related to?:
- > Category
-
-What type of relationship is this?
- ------------ ---------------------------------------------------------------------- 
-  Type         Description                                                           
- ------------ ---------------------------------------------------------------------- 
-  ManyToOne    Each Recipe relates to (has) one Category.                            
-               Each Category can relate to (can have) many Recipe objects            
-                                                                                     
-  OneToMany    Each Recipe can relate to (can have) many Category objects.           
-               Each Category relates to (has) one Recipe                             
-                                                                                     
-  ManyToMany   Each Recipe can relate to (can have) many Category objects.           
-               Each Category can also relate to (can also have) many Recipe objects  
-                                                                                     
-  OneToOne     Each Recipe relates to (has) exactly one Category.                    
-               Each Category also relates to (has) exactly one Recipe.               
- ------------ ---------------------------------------------------------------------- 
-
- Relation type? [ManyToOne, OneToMany, ManyToMany, OneToOne]:
- > ManyToOne
-
- Is the Recipe.category property allowed to be null (nullable)? (yes/no) [yes]:
- > no
-
- Do you want to add a new property to Category so that you can access/update Recipe objects from it - e.g. $category->getRecipes()? (yes/no) [yes]:
- > yes
-
- A new property will also be added to the Category class so that you can access the related Recipe objects from it.
-
- New field name inside Category [recipes]:
- > 
-
- Do you want to activate orphanRemoval on your relationship?
- A Recipe is "orphaned" when it is removed from its related Category.
- e.g. $category->removeRecipe($recipe)
- 
- NOTE: If a Recipe may *change* from one Category to another, answer "no".
-
- Do you want to automatically delete orphaned App\Entity\Recipe objects (orphanRemoval)? (yes/no) [no]:
- > no
-
- updated: src/Entity/Recipe.php
- updated: src/Entity/Category.php
-
- Add another property? Enter the property name (or press <return> to stop adding fields):
- > 
-
-
-           
-  Success! 
-           
-
- Next: When you're ready, create a migration with php bin/console make:migration
- 
-student@teleporter:/var/www/html/apo/projet-12-recettes-healthy-back$ php bin/console make:migration
-
-# 5:
-
-REMPLISAGE DE LA BDD AVEC DES DONNEES CREATION D UN DOC SQL REPRNANT LES INSTRUCTIONS SQL POUR RECREER LA BDD
-
-# 6:
-
-REALISER LE CRUD VIA make:crud
-
-# 7: 
-
-TEST DU CRUD
-
-# 8:
-
-CONFIGURER L API POUR UN PREMIER ENVOI AUX DEV FRONT
-
-
-
-
-
-
-
+Lorsque vous êtes sur le projet, inscrivez vous, naviguez, choisissez votre recette en fonction de vos envies et préparez là.
+Maintenant régalez vous et take yourself!!!
