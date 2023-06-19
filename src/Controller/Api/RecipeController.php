@@ -197,9 +197,7 @@ class RecipeController extends AbstractController
             return $this->json($errorsList, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        // Persist and flush the recipe
-        $entityManager->persist($recipe);
-        $entityManager->flush();
+
 
         return $this->json(
             ['recipe' => $recipe],

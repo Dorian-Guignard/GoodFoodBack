@@ -5,20 +5,26 @@
 
 {% block body %}
     {% if error %}
+    {# condition qui empêche la connexion si une erreur est présente, sinon elle affiche un message d'erreur avec la méthode 'trans' pour la traduction. #}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
+    {# le formulaire est ici soumis à l'adresse 'app_login' en utilisant la méthode POST pour activer la connexion #}
     <form action="{{ path('app_login') }}" method="post">
+
+    {# Champ de l'email #}
     <div class="login">
         <label for="username">Email:</label>
         <input type="text" id="username" name="_username" value="{{ last_username }}"/>
     </div>
+
+    {# Champ du mot de passe #}
     <div class="login2" >
         <label for="password">Mot de passe:</label>
         <input type="password" id="password" name="_password"/>
     </div>
-        {# If you want to control the URL the user is redirected to on success
-        <input type="hidden" name="_target_path" value="/account"/> #}
+
+        {# Bouton de validation permettant la connexion #}
     <div class="loginButton">
         <button  class="btn btn-success" type="submit">Connexion</button>
     </div>
